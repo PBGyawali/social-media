@@ -34,7 +34,8 @@ Features available:
 *log in as a guest with ability to read stories and contact admin is added
 *the userlist table can be sorted,individual column can be hidden and the table can be searched upon
 *users are locked for a moment in case of multiple failed login attempts and eventually blocked after too much failed login attempts
-*
+**users get email for email verification,password change and profile verification
+
 
 
 *admin section gets profile picture and the avataar in case no image is uploaded according to the gender of the user
