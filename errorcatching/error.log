@@ -1,0 +1,37 @@
+2021-02-08 01:55:39 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 01:55:41 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:04:33 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:04:39 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:07:18 AM Connection, PDO: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+
+2021-02-08 02:07:22 AM Connection, PDO: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+
+2021-02-08 02:07:27 AM Connection, PDO: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+
+2021-02-08 02:11:22 AM Connection, PDO: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+
+2021-02-08 02:11:28 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: YES)
+2021-02-08 02:11:33 AM Connection, PDO: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.
+
+2021-02-08 02:25:01 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:25:03 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:25:05 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:26:47 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:26:49 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:26:51 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:30:17 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:30:19 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:30:21 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:40:32 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:40:34 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:40:36 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:41:14 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:41:16 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:41:18 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:42:26 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:42:28 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:42:31 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+2021-02-08 02:43:32 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:43:34 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-02-08 02:43:36 AM Connection, PDO: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: NO)
+2021-03-06 04:37:58 AM Connection, PDO: could not find driver
