@@ -1,0 +1,98 @@
+Options +SymLinksIfOwnerMatch
+
+# disables directory indexing
+Options -Indexes
+
+ErrorDocument 400 /social_media/errorcatching/400.php
+
+
+
+ErrorDocument 401 /social_media/errorcatching/401.php
+
+
+
+ErrorDocument 403 /social_media/errorcatching/403.php
+
+
+ErrorDocument 404 /social_media/errorcatching/404.php
+
+
+ErrorDocument 500 /social_media/errorcatching/500.php
+
+# PHP error handling for production servers
+# Disable display of startup errors
+php_flag display_startup_errors off
+
+# Disable display of all other errors
+php_flag display_errors off
+
+# Disable HTML markup of errors
+php_flag html_errors off
+
+# Enable logging of errors
+php_flag log_errors on
+
+# Disable ignoring of repeat errors
+php_flag ignore_repeated_errors off
+
+# Disable ignoring of unique source errors
+php_flag ignore_repeated_source off
+
+# Enable logging of PHP memory leaks
+php_flag report_memleaks on
+
+# Preserve most recent error via php_errormsg
+php_flag track_errors on
+
+# Disable formatting of error reference links
+php_value docref_root 0
+
+# Disable formatting of error reference links
+php_value docref_ext 0
+
+# Specify path to PHP error log
+php_value error_log /home/path/public_html/domain/PHP_errors.log
+
+# Specify recording of all PHP errors
+# [see footnote 3] # php_value error_reporting 999999999
+php_value error_reporting -1
+
+# Disable max error string length
+php_value log_errors_max_len 0
+
+# Protect error log by preventing public access
+<Files PHP_errors.log>
+ Order allow,deny
+ Deny from all
+ Satisfy All
+</Files>
+
+
+
+
+Options +FollowSymLinks -MultiViews
+# Turn mod_rewrite on
+RewriteEngine On
+RewriteBase /
+
+## don't touch /forum URIs
+RewriteRule ^forums/ - [L,NC]
+
+
+
+# To internally forward /dir/foo to /dir/foo.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*?)/?$ $1.php [L]
+
+
+
+
+
+
+
+
+
+# To remove www header
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
