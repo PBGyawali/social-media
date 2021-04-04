@@ -1,0 +1,1 @@
+thumbnail imaages for posts
