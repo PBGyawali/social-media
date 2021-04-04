@@ -1,0 +1,155 @@
+body {
+    overflow-x: hidden;
+    padding-top: 75px;
+}
+html, body{width:100%; 
+  min-height: 100%;
+  height: auto !important;        
+  height:100%; }
+
+
+.bg-purple
+{
+	background-color: rgba(51,94,234,.1);
+}
+
+.bg-dark {
+    background-color: rgb(146, 140, 140);
+    background-color: rgb(39, 39, 39)!important;
+}
+
+
+
+#sidebar li
+{
+    border-top: 1px solid #f9f9f9;    
+}
+#sidebar li:first-child
+{
+    border-top: 1px solid #f9f9f9;
+}
+#sidebar li:last-child
+{
+    border-bottom: 1px solid #f9f9f9;
+}
+
+#sidebar li a, .dropdown-btn
+{
+    background-color: rgb(39, 39, 39);
+    color: rgb(178, 137, 253);
+    width: 100%;
+}
+
+
+#sidebar li a:hover,.dropdown-btn:hover
+{background-color: rgb(146, 140, 140);
+    background-color: rgb(218, 119, 5);
+	color: white;
+}
+
+
+
+  .dropdown-container {
+	display: none;
+	background-color: #262626;
+	padding-left: 0px;
+  }
+
+
+  .dropdown-container a{
+    margin: 0px;
+    padding: 0px;
+  }
+.active_class
+{
+    background-color: green!important;
+	color: white!important;
+    line-height: 40px;    
+}
+
+.inactive_class
+{
+    color:#fff; 
+    line-height: 40px;   
+}
+
+.active_page
+{
+  background-color: green!important;
+	color: white!important;
+      
+}
+
+.inactive_page
+{
+    color:#fff; 
+   
+}
+/*dashboard*/
+div.card.stats a {  color:white;}
+a:hover {  text-decoration: none; }
+div.card{cursor:pointer;}
+
+div.stats:hover a ,  div.stats:hover {
+    background-color: #3a032e!important;
+    color:yellow!important;
+    cursor: pointer; 
+    transform: translateY(-10px);
+}
+
+
+/*profile*/
+button#facebook.fa-facebook{
+    background: white;
+    border-radius: 5px;
+    color:#4267B2;
+  }
+  button#twitter.fa-twitter {
+    background: #00acee!important;
+    color:white;
+    border-radius: 5px;
+    }
+    button#google-plus.fa-google-plus {
+    background: #db4a39;
+    color:white;
+    border-radius: 5px;
+  }
+  
+  .error_msg {
+    text-align: center;
+    margin: 90px;
+    margin-left: 0px; 
+    padding: 10px; 
+    width: 100%;
+    top:0;    
+    position: fixed;
+    z-index: 997;
+    display: none;
+  }
+
+  .success_msg {
+    text-align: center;
+    margin: 90px;
+    margin-left: 0px;  
+    padding: 10px; 
+    width: 100%;
+    top:0;    
+    position: fixed;
+    z-index: 999;
+    display: none;
+  }
+/* jquery confirm box styling */
+form#confirm_form label{
+  font-size:15pt;
+  text-align: center;
+}
+
+form#confirm_form input{
+  width: 100%;
+  font-size:16pt;
+}
+
+form#confirm_form .form-group{
+  width: 100%;
+  font-size:16pt;
+}

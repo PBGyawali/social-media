@@ -1,0 +1,79 @@
+* {margin: 0px;padding: 0px;}
+  
+html { height: 100%; box-sizing: border-box; }
+
+  body {
+    font-size: 1rem;
+    background: #000; 
+    color:rgb(243, 239, 17); 
+    position: relative;
+    margin: 0px;
+    padding-bottom: 6rem;
+    min-height: 100%;
+  }
+  /* HEADINGS DEFAULT */
+h1, h2, h3, h4, h5, h6 { color: yellow; font-family: 'Averia Serif Libre', cursive; }
+a { text-decoration: none; }
+
+  
+    
+  table a{color: yellow;}
+a:hover{
+  text-decoration: none;
+  color: #15d832;
+}
+  
+.content {
+	margin: 5px auto;
+	border-radius: 5px;
+	min-height: 400px;
+}
+.content:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+ 
+ .post {
+	width: 335px;
+	margin: 9px;
+	min-height: 320px;
+	float: left;
+	border-radius: 2px;
+	border: 1px solid #b3b3b3;
+	position: relative;
+}
+ .category {
+	margin-top: 0px;
+	padding: 3px 8px;
+	color: #374447;
+	background: white;
+	display: inline-block;
+	border-radius: 2px;
+	border: 1px solid #374447;
+	box-shadow: 3px 2px 2px;
+	position: absolute;
+	left: 5px; top: 5px;
+	z-index: 3;
+}
+.category:hover {
+	box-shadow: 3px 2px 2px;
+	color: white;
+	background: #374447;
+	transition: .4s;
+	opacity: 1;
+}
+
+ .post_info {
+	height: 100%;
+	padding: 0px 5px;
+	font-weight: 200;
+    font-family: 'Noto Serif', serif;
+    color: #222
+}
+
+.post_info span.read_more {
+	position: absolute;
+	right: 5px; bottom: 5px;
+}
+

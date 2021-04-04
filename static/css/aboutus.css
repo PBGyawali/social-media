@@ -1,0 +1,151 @@
+/* Import Fonts */
+@import url(http://fonts.googleapis.com/css?family=Coustard|Open+Sans);
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	line-height: 21px;
+	font-weight:400;
+	-webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+	color: rgb(235, 235, 235);
+	background: #000;
+	margin-top: 0px;
+}
+h1{
+	font-family: 'Coustard', serif;
+	color:#fff;
+	font-weight: normal;
+	letter-spacing: 1px;
+	font-size: 63px; line-height: 70px; padding: 0; margin: 0;
+}
+
+
+a.link {
+	color:yellow;
+	text-decoration:none;
+	font-weight: normal;
+}
+a:hover {text-decoration:underline;}
+
+/* Set the background ima */
+#maximage {
+	display:none;
+	position:fixed !important;
+	margin-top: 0px;
+}
+
+.gradient {
+	left:0;
+	height:100%;
+	position:absolute;
+	width:100%;
+	z-index:999;
+	}
+	
+	div.mc-image {
+		/*NOTE: Mozilla flickers when fading and using 'all', so we have to be specific with what property we want to transition:
+			 If you are using fading transitions, use 'opacity: */
+		-webkit-transition: opacity 1s ease-in-out; 
+		-moz-transition: opacity 1s ease-in-out; 
+		-o-transition: opacity 1s ease-in-out; 
+		transition: opacity 1s ease-in-out;
+		
+		/*If you are using horizontal slide transitions, use the following CSS:
+		-webkit-transition: left 1s ease-in-out; 
+		-moz-transition: left 1s ease-in-out; 
+		-o-transition: left 1s ease-in-out; 
+		transition: left 1s ease-in-out;*/
+		
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		background-position:center center;
+		background-repeat:no-repeat;
+		height:100%;
+		overflow:hidden;
+		width:100%;
+	}
+	
+	.mc-old-browser .mc-image {
+		overflow:hidden;
+	}
+.show{display: block;}
+.hide{opacity: 0;}
+
+/* Set Page Elements */
+.content { 
+	float:left;
+	margin:40px;
+	position:absolute;
+	top:200px;
+	width:600px;
+	z-index:9999;
+	-webkit-font-smoothing:antialiased;
+}
+
+#logo {
+	font-family: 'Coustard', serif;
+	font-size: 49px;
+	bottom:40px;
+	height:auto;
+	left:40px;
+	position:absolute;
+	width:30%;
+	z-index:1000;
+	color: #fff;
+}
+
+.main-nav{
+	position:absolute;
+	bottom: 23px;
+	left:500px;
+	z-index:101;
+}
+.main-nav ul li { 
+	display: inline;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-left: 1px solid yellow;
+	
+}
+.main-nav ul li a.link.active {color: #ffa800;}
+
+.social-nav {
+	position:absolute;
+	bottom: 35px;
+	right: 200px;
+}
+
+
+section .social-nav {
+	position:absolute;
+	bottom: 35px;
+	right: 50px;
+}
+.social-nav ul {margin: 0; padding:0;}
+.social-nav ul li{
+	list-style: none;
+	display:block;
+	float: left;
+	background: #393939;
+	padding:50px 10px 5px 10px;
+	margin: 1px;
+	opacity: .5;
+}
+.social-nav ul li:hover {opacity: 1;}
+
+button.full-screen:hover {opacity: 1;}
+
+#arrow_left, #arrow_right {
+	bottom:30px;
+	height:42px;
+	position:absolute;
+	right:40px;
+	width:42px;
+	z-index:1000;
+}
+#arrow_left {
+	right:95px;
+}

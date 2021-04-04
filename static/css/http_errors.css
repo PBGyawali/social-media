@@ -1,0 +1,148 @@
+
+ @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300);
+
+body {
+	background-color: #06617a80/*#335B67;*/;
+	background: radial-gradient( #04313f80 0%, #122538 100%) fixed no-repeat;
+	font-family: 'Source Sans Pro', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	margin: 0px;
+}
+
+::selection {
+	background-color: rgba(0,0,0,0.2);
+}
+
+::-moz-selection {
+	background-color: rgba(0,0,0,0.2);
+}
+
+/* === WRAP === */
+
+#wrap {
+	width: 80%;
+	max-width: 1400px;
+	margin:0 auto;
+	height: auto;
+	position: relative;
+	margin-top: 3%;
+}
+
+
+/* === MAIN TEXT CONTENT === */
+
+#main-content {
+	float: right;
+	max-width: 50%;
+	color: white;
+	font-weight: 250;
+	font-size: 18px;
+	padding-bottom: 0px;
+	line-height: 28px;
+	text-align: justify;
+}
+
+#main-content h1 {
+	margin: 0px;
+	font-weight: 400;
+	font-size: 42px;
+	margin-bottom: 20px;
+	line-height: normal;
+}
+
+
+/* === NAVIGATION BUTTONS === */
+
+#navigation { margin-top: 2%; }
+
+#navigation a.navigation {
+	display: block;
+	float: left;
+	background-color:  rgb(39, 39, 39);
+	padding-left: 15px;
+	padding-right: 15px;
+	color: rgb(198, 238, 153);
+	height: 41px;
+	line-height: 41px;
+	text-decoration: none;
+	font-size: 16px;
+	transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	margin-right: 2%;
+	margin-bottom: 2%;
+	border-bottom: none;
+}
+
+
+
+#navigation a.navigation:hover {
+	background-color: rgb(184, 101, 8);
+	color: white;
+	border-bottom: none;
+}
+
+
+
+/* === WORDSEARCH === */
+
+#wordsearch {
+	width: 45%;
+	float: left;
+}
+
+#wordsearch ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+/* changes the colour of the text in box when it is not highlighted or hovered*/
+#wordsearch ul li {
+	float: left;
+	width: 12%;
+	background-color:  rgb(39, 39, 39);;
+	list-style: none;
+	margin-right: 0.5%;
+	margin-bottom: 0.5%;
+    padding: 0;
+    display: block;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    overflow: hidden;
+    font-size: 24px;
+    font-size: 1.6vw;
+    font-weight: 300;
+    transition: background-color 0.75s ease;
+    -moz-transition: background-color 0.75s ease;
+    -webkit-transition: background-color 0.75s ease;
+    -o-transition: background-color 0.75s ease;
+}
+
+/* changes the colour of the highlighted text in box */
+#wordsearch ul li.selected {
+	background-color: rgb(184, 101, 8);
+	color: rgba(255,255,255,1);
+	font-weight: 400;
+}
+
+
+/* === RESPONSIVE CSS === */
+
+@media all and (max-width: 899px) {
+	#wrap { width: 90%; }
+}
+
+@media all and (max-width: 799px) {
+	#wrap { width: 90%; height: auto; margin-top: 40px; top: 0%; }
+	#wordsearch { width: 90%; float: none; margin:0 auto; }
+	#wordsearch ul li { font-size: 4vw; }
+	#main-content { float: none; width: 90%; max-width: 90%; margin:0 auto; margin-top: 30px; text-align: justify; }
+	#main-content h1 { text-align: left; }
+	
+}
+
+@media all and (max-width: 499px) {
+	#main-content h1 { font-size: 28px; }
+}
