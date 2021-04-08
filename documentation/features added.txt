@@ -1,0 +1,23 @@
+there is a separate menu for user and admin and they are redirected to respected page on login
+log in as a guest with ability to read stories and contact admin is added
+admin can extract userlist into a table and edit,delete or reset user profile
+the userlist table can be sorted,individual column can be hidden and the table can be searched upon
+admin can view,edit,and delete posts
+admin can view edit,add and delete topics
+admin can log in as a user
+admin can create a new user or create a new admin
+admin can update their own profile or password
+admin can view statistics of the website
+admin section gets profile picture and the avataar in case no image is uploaded according to the sex of the user
+ability to add and delete profile pictures
+User panel get a profile completion percentage dialog
+users are now able to create a new post
+user are now able to manage edit and delete their own post
+the about section has been renovated with moving slideshows and social media links as well as a new theme
+users can view the number of times they have view the page in a session
+users can now view posted videos
+user are now allowed to post videos into their post
+readers are allowed to sort/searh posts on the basis of topic
+reader are allowed to share the post to social media button
+
+/*for the list of features to be added please go to the features to be added document*/

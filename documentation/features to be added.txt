@@ -1,0 +1,15 @@
+the comment and reply system needs to be added
+like and dislike system for the user needs to be added
+social media login feature
+create index,login and register page all in a single page with jquery
+add ability to store cookies
+add ability to check data without submitting form with ajax
+add ability to create edit and update userlist with ajax
+solves the image upload problem in ckeditor with hacks
+
+sanitize all the php codes into a function and remove useless codes
+
+allow users to create a post as anonymous author but still be able to manage the post as their own
+
+users should be allowed to click a social media button and save their profile link in the profile section
+they should also be able to see the previously posted profile link on the input textbox

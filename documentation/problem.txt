@@ -1,0 +1,9 @@
+these are the problems still need to be solved
+
+menu and image frequently change appearance according to the amount of data
+
+removing the extension .php from url either does not allow login or some pages show 404 error page not found 
+
+
+
+
