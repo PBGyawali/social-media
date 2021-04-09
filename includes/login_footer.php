@@ -7,6 +7,7 @@
 <script src="<?php echo JS_URL?>password_strength.js"></script>
  <script src="<?php echo JS_URL?>live_register.js"></script>
  <script src="<?php echo JS_URL .'toggle_password.js'?>"></script>
+ <script src="<?php echo JS_URL .'tilt.jquery.min.js'?>"></script>
 
 <div id="wrapper">
         <div class="blocker"></div>
@@ -29,6 +30,11 @@
         <div class="blocker"></div>        
 </div>
 <script>
+
+        $('.js-tilt').tilt({
+            scale: 1.1
+        });        
+ 
         var ref = $('#hint');        
         var popup = $('#popup');
         popup.hide();

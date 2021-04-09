@@ -220,14 +220,17 @@ $user_id=$check->is_user()?$_SESSION['id']:"";
 					</li>
 					<li > <a href="index.php#register"><span class="btn btn-primary btn-sm ">Register</a></li>  
 			<?php endif?>
-    	<?php else:?> 
-      		  <li > <a href="index.php#login"><span class="btn btn-primary btn-sm mr-2">Log in as User</a></li>
-              <li > <a href="index.php#register"><span class="btn btn-primary btn-sm">Register</a></li>
+		<?php else:?> 
+			<li>
+			<form action="<?php echo BASE_URL.'logout.php'?>" method="post" >
+				<button class="btn btn-primary btn-sm mr-2 mt-0" type="submit" ><span class="btn-primary btn-sm mr-2">Log in as User</button>
+			</form>
+		</li>			
+              <li> <a href="index.php#register"><span class="btn btn-primary btn-sm">Register</a></li>
 		<?php endif?>
 	        </div> 
 	    </div>
 	</div></div>
-    <script src="<?php echo JS_URL.'confirmdefaults.js'?>"></script>
-    <script src="<?php echo JS_URL.'confirm.js'?>"></script>
+    
    
 	
