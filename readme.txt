@@ -7,7 +7,7 @@ This projected in intended towards creating a social media. it is based on php a
 
 
 ## Programming feature
-*use of prepared statements to prevent sql injection
+<sub>*use of prepared statements to prevent sql injection</sub>
 *added measures to minimize XSS attacks
 *based on object oriented programming
 *influenced by MVC (model-view-controller) framework and tries to mimic the framework wherever possible
