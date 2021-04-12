@@ -28,7 +28,7 @@ This projected in intended towards creating a social media. it is based on php a
 *security feature to prevent  hackers from mediating as a user by checking the user request origin and comparing user data previously sent to the user
 
 
-##Features available:
+## Features available:
 *the user type is divided in guest,user,author,editor,admin and owner and various features and privilege is given according to user type
 *there is a separate menu for user,guest and admin and and owner they are redirected to respected page on login
 *log in as a guest with ability to read stories and contact admin is added
@@ -57,13 +57,13 @@ This projected in intended towards creating a social media. it is based on php a
 users should be allowed to click a social media button and save their profile link in the profile section
 they should also be able to see the previously posted profile link on the input textbox
 
-GUEST FEATURES
+## GUEST FEATURES
 *view and search topics
 *contact admin for problems
 *read and share posts
 *view comments 
 
-USER FEATURES
+## USER FEATURES
 User have all the features of a guest plus the following additional feature
 *add comments and replies as well as ability to edit and delete their own comments and replies
 *view statistics ot their posts and post visitors
@@ -89,7 +89,7 @@ User have all the features of a guest plus the following additional feature
 
 
 
-EDITOR FEATURES
+## EDITOR FEATURES
 Editor have all the features of a user plus following ability
 *view statistics as a dashboard
 *add,edit or delete topics
@@ -103,7 +103,7 @@ Editor have all the features of a user plus following ability
 
 
 
-ADMIN FEATURES
+##  ADMIN FEATURES
 Admin have all the features of the editor plus following ability
 *admin can view full statistics of the website
 *ability to add new user
@@ -119,7 +119,7 @@ Admin have all the features of the editor plus following ability
 *admin can view if user target or post target has been reached or not
 
 
-OWNER FEATURES
+## OWNER FEATURES
 Owners have all the features of an admin plus the ability to change sensitive data such as
 *currency
 *currency symbol
