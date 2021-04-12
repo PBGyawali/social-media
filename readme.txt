@@ -6,7 +6,7 @@ This projected in intended towards creating a social media. it is based on php a
 
 
 
-Programming feature
+#Programming feature
 *use of prepared statements to prevent sql injection
 *added measures to minimize XSS attacks
 *based on object oriented programming
@@ -28,7 +28,7 @@ Programming feature
 *security feature to prevent  hackers from mediating as a user by checking the user request origin and comparing user data previously sent to the user
 
 
-Features available:
+##Features available:
 *the user type is divided in guest,user,author,editor,admin and owner and various features and privilege is given according to user type
 *there is a separate menu for user,guest and admin and and owner they are redirected to respected page on login
 *log in as a guest with ability to read stories and contact admin is added
