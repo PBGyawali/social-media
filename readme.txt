@@ -6,7 +6,7 @@ This projected in intended towards creating a social media. it is based on php a
 
 
 
-## Programming feature
+## **Programming feature**
 <sub>*use of prepared statements to prevent sql injection</sub>
 *added measures to minimize XSS attacks
 *based on object oriented programming
