@@ -10,13 +10,13 @@
  $user_id='';
  $featured_image='';
  $selected = "";
+
+// $errors=array();
 // if user clicks the create post button
 if (isset($_POST['create_post'])) { 
 	$result=$article->createPost($_POST);
 	if($result){	
-				$_SESSION['message'] = "Post created successfully";
-				header('location: posts.php');
-				exit(0);
+				$errors=$result[3];	
 	} 
 }
 
@@ -24,7 +24,8 @@ if (isset($_POST['create_post'])) {
 if (isset($_POST['create-post'])) { 
 	$result=$article->createPost($_POST);
 	if($result)
-	   $article->response($result[0],$result[1],$result[2]);
+	$response='<div class="alert alert-'.$result[1].'">'.$result[0].'</div>';
+	   $article->response($response,$result[1],$result[2]);
 }
 
 // if user clicks the Edit post button
@@ -58,7 +59,9 @@ if (isset($_POST['update_post'])) {
 // if user clicks the update post button through ajax
 if (isset($_POST['update-post'])) {
 	$result=$article->updatePost($_POST);
-	$article->response($result[0],$result[1],$result[2]);	
+	if($result)
+	$response='<div class="alert alert-'.$result[1].'">'.$result[0].'</div>';
+	   $article->response($response,$result[1],$result[2]);
 }
 	
 	if(isset($_POST["id"]))
@@ -76,7 +79,7 @@ if (isset($_POST['update-post'])) {
 								$response=$message;
 							}
 							else{
-								$status="error";
+								$status="danger";
 								$response="The post status could not be changed due to some error";
 							}					
 							break;
@@ -89,7 +92,7 @@ if (isset($_POST['update-post'])) {
 									$response=$message;
 								}
 							else{
-									$status="error";
+									$status="danger";
 									$response="The post status could not be changed due to some error";
 							}					
 							break;
@@ -100,11 +103,12 @@ if (isset($_POST['update-post'])) {
 								$response="The post was successfully deleted ";
 							}
 						else{
-								$status="error";
+								$status="danger";
 								$response="The post could not be deleted due to some error";
 						}					
 						break;
 				}
+				$response='<div class="alert alert-'.$status.'">'.$response.'</div>';
 				$article->response($response,$status);
 			}
 	

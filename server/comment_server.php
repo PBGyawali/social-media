@@ -1,17 +1,13 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(USER_CLASS.'publicview.php');
-$katha=new publicview(); 
+$katha=new publicview; 
 $user_id =(isset($_SESSION['id'])?$_SESSION['id']:'');
 
 	if (isset($_GET['post-slug']) && !empty($_GET['post-slug'])) {
 	$slug = $_GET['post-slug'];	
 	// get postid from slug out of the database
-	$posting = $katha->get_data('id','posts','slug',$slug,'',1);
-	if(!empty($posting))// Get all comments from database
-	$comments = getallcomments($posting);}
-	
-	
-
+	$post_id = $katha->get_data('id','posts','slug',$slug,'',1);
+	if(!empty($post_id))// Get all comments from database
+	$comments = getallcomments($post_id);}
 function getallcomments($id){
 	global $katha;
 	return $katha->getAllArray('comments','post_id',$id,'','','created_at'); 
@@ -56,13 +52,14 @@ if (isset($_POST['comment_posted'])) {
 	$inserted_id = $katha->id();		
 	// if insert was successful, return that same comment 	
 	if ($inserted_id) {
+		$username=getUsernameById($user_id);
 		$comment = "<div class='comment clearfix' id='comment_".$inserted_id."'>					
 						<div class='comment-details' id='comment_details_".$inserted_id."'>
 							<div id='profilepic_'".$inserted_id."'>
 								<img src='".USER_IMAGES_URL.rawurlencode(getProfilePictureById($user_id))."' height='40px' width='40px' alt='profile picture' class='rounded-circle profile_pic'>
 							<div >
 							<div class='comment_info'>
-								<a class='comment-name' href='profile?user='".$user_id."'>".getUsernameById($user_id)."</a>						
+								<a class='comment-name' href='profile?user='".$user_id."'>".$username."</a>						
 								<span class='comment-date'>" . date('F j, Y ', time()) . "</span>
 								<p class='comment_value'>" . htmlspecialchars($comment_text). "</p>
 								<a class='edit-btn btn btn-sm btn-primary py-0' data-id='" . $inserted_id . "'>Edit</a>
@@ -82,8 +79,8 @@ if (isset($_POST['comment_posted'])) {
 					echo json_encode($comment_info);
 					$title=$katha->get_data('title','posts','id',$post_id);
 						$katha->activitylogs($user_id, 'You commented on','comment','post',$post_id,$title,$comment_text);
-						if(!$check->is_same_user($receiver_id))
-						$katha->insert('alerts',array('user_id','alert','type'),array($receiver_id,getUsernameById($user_id).' commented on your post '.$title,'comment'));
+						if(!$katha->is_same_user($receiver_id))
+						$katha->insert('alerts',array('user_id','alert','type'),array($receiver_id,$username.' commented on your post '.$title,'comment'));
 				}
 	else 
 		echo "error";
@@ -148,10 +145,11 @@ if (isset($_POST['reply_posted'])) {
 	$inserted_id = $katha->id();	
 	// if insert was successful, get that same reply from the database and return it
 	if ($inserted_id) {
+		$username=getUsernameById($user_id);
 		$reply = "<div class='comment reply clearfix'>
 					<img src='".USER_IMAGES_URL.getProfilePictureById($user_id)."' alt='' height='40px' width='40px' class='profile_pic rounded-circle img-fluid'>
 					<div class='comment-details'>
-						<a class='comment-name' href='profile?user='".$user_id."'>".getUsernameById($user_id)."</a>
+						<a class='comment-name' href='profile?user='".$user_id."'>".$username."</a>
 						<span class='comment-date'>" . date('F j, Y ', time()) . "</span>
 						<p>" . htmlspecialchars($reply_text) . "</p>
 						<a class='delete-btn btn btn-sm btn-danger py-0' data-id='".$inserted_id."' data-object='replies'>Delete</a>
@@ -161,8 +159,8 @@ if (isset($_POST['reply_posted'])) {
 				echo json_encode($reply);
 				$comments=$katha->get_data('body','comments','id',$comment_id);
 				$katha->activitylogs($user_id, 'Your replied on','reply','comment',$comment_id,$comments,$katha->get_data('body','replies','id',$inserted_id));
-				if(!$check->is_same_user($receiver_id))				
-					$katha->insert('alerts',array('user_id','alert','type'),array($receiver_id,getUsernameById($user_id).' replied on your comment '.$comments,'reply'));
+				if(!$katha->is_same_user($receiver_id))				
+					$katha->insert('alerts',array('user_id','alert','type'),array($receiver_id,$username.' replied on your comment '.$comments,'reply'));
 							
 	} 
 	else 

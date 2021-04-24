@@ -1,10 +1,8 @@
-                                                                                                                     <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php'); 
-
+<?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php'); 
 $post_id='';
 $sender_id='';
 $error="";
-$rating = array(); 
-include_once(USER_CLASS.'publicview.php');
+$rating = array();
 $katha=new publicview(); 
 if (isset($_SESSION['id']))
 {$sender_id = $_SESSION['id'];
@@ -17,19 +15,16 @@ if (isset($_POST['actions'])) {
   
   switch ($action) {
     case 'like':
-    case 'dislike':
-      $katha->query="INSERT INTO rating_info (user_id, post_id, rating_action) 
-                    VALUES (?, ?,'$action') ON DUPLICATE KEY UPDATE rating_action='$action'";  
+    case 'dislike':     
+      $attr=array('duplicate'=>"rating_action=?"   );
+      $katha->insert('rating_info',array('user_id', 'post_id', 'rating_action'),array($sender_id,$post_id,$action,$action),$attr);
          break;  
   	case 'unlike':      
-  	case 'undislike':
-      $katha->query="DELETE FROM rating_info WHERE user_id= ? AND post_id= ? ";
+    case 'undislike':
+      $katha->Delete('rating_info',array('user_id', 'post_id'),array($sender_id,$post_id));      
       break;  	
-  }
-  
+  }  
   // execute query to effect changes in the database ... 
-  $katha->execute(array($sender_id,$post_id));
-  echo getRating($post_id);
   $title=$katha->get_data('title','posts','id',$post_id);
   $katha->activitylogs($sender_id, 'You '.$action.'d ',$action,'post',$title);
   $katha->insert('alerts',array('user_id','alert','type'),array($receiver_id,$katha->get_data('username','users','id',$sender_id).' '.$action.'d your post '.$title,$action));
@@ -99,23 +94,18 @@ function getFollowers($id){
 function hasUserRated($post_id,$value){  
   global $sender_id,$katha;  
   $result = $katha->CountTable('rating_info',array('user_id','post_id','rating_action'),array($sender_id ,$post_id,$value)); 
-  if ($result > 0) {
-  	return true;
-  }else{
-  	return false;
-  } 
-
+  if ($result > 0) 
+  	return true; 
+  return false;
 }
 
 // Check if user already follows author or not
 function userfollowed($receiver_id){
   global $sender_id,$katha;  
   $result = $katha->CountTable('followers',array('sender_id','receiver_id'),array($sender_id,$receiver_id)); 
-  if ($result > 0) {
+  if ($result > 0)
   	return true;
-  }else{
-  	return false;
-  }
+  return false;  
 } 
 
 ?>
