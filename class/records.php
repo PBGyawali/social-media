@@ -1,6 +1,6 @@
 <?php  
 class records extends publicview{
-	private $user_id;		
+	public $user_id;		
 	private $message;
     public function __construct(){
 		parent::__construct();		
@@ -35,60 +35,55 @@ function allOfflineMessages(){
 		return $this->get_messages();
 }
 function allunseenOfflineMessages(){
-		return $this->get_messages(3,'no');
+		return $this->get_messages(3);
 }
 
 function get_all_chat_data($user_id=self::user_id){
 	$userid=$this->user_id;
 	if($user_id)
 	$userid=$user_id;
-	$this->query = "SELECT * FROM offline_messages 
-	LEFT JOIN users ON users.id = offline_messages.user_id
-	 WHERE( offline_messages.user_id = '$this->user_id'
-	 AND offline_messages.sender_id='$userid') 
-	 OR
-	 (offline_messages.user_id = '$userid' AND 
-	 offline_messages.sender_id='$this->user_id')
-	ORDER BY offline_messages.sent_on ASC	";	
-	$this->execute();
-	$messages = $this->statement_result();		
+	$join=array('LEFT JOIN'=>array('users'=>'users.id = offline_messages.user_id') );
+	 $messages=$this->getAllArray(
+		'offline_messages',  
+		array('(offline_messages.user_id','offline_messages.sender_id','offline_messages.user_id','offline_messages.sender_id'),
+	   array($this->user_id,$userid,$userid,$this->user_id),
+	   array(' AND ',' ) OR (',' AND ',' )'),'','offline_messages.sent_on','ASC',$join);			
 	return $this->getextradata($messages);
 }
 
 function get_conversation($order='ASC',$limit=null){
-	if 	($this->is_user()){
-		$this->query="SELECT  * FROM offline_messages		
-		WHERE offline_messages.user_id = '$this->user_id' 
-		OR offline_messages.sender_id='$this->user_id'  
-		ORDER BY offline_messages.sent_on $order	";		
-		if($limit)
-		$this->query.=" LIMIT ".$limit;				
-		$this->execute();					
-		$messages = $this->statement_result();
+	if 	($this->is_user()){						
+		$messages =$this->getAllArray('offline_messages',array('user_id','sender_id'),
+		array($this->user_id,$this->user_id),'OR',$limit,'sent_on',$order);
 		return $this->getextradata($messages);
 	}		
    return null;
 }
-function get_messages($limit=null,$archive=NULL,$order='DESC'){
+function get_messages($limit=null,$archive=NULL,$order='DESC',$data=array()){
 	if 	($this->is_user()){
-		$this->query="SELECT  * FROM offline_messages
-		JOIN(	SELECT 	user_id,sender_id,MAX(sent_on) AS recent_date
-				FROM offline_messages
-				WHERE offline_messages.user_id = $this->user_id OR offline_messages.sender_id=$this->user_id				
-				GROUP BY user_id,sender_id
-			) AS Latest
-		ON offline_messages.sent_on=Latest.recent_date
-		AND offline_messages.user_id=Latest.user_id
-		AND offline_messages.sender_id=Latest.sender_id
-		LEFT JOIN message_log on offline_messages.user_id=message_log.user_id 
-		AND offline_messages.sender_id=message_log.sender_id	";
-		if($archive)
-		$this->query.=" WHERE archive='$archive' ";
-		$this->query.=" ORDER BY offline_messages.sent_on $order ";				
-		if($limit)
-		$this->query.=" LIMIT ".$limit;		
-		$this->execute();					
-		$messages = $this->statement_result();		
+		$where=$condition=array();
+		if($archive){
+			$where="  archive ";
+			$condition[]=$archive;
+		};
+		$condition[]=$this->user_id;
+		$condition[]=$this->user_id;
+		$attr=array('debug'=>true,
+            'groupby'=>'user_id,sender_id',
+            'fields'=>'user_id,sender_id,MAX(sent_on) AS recent_date'
+			);
+		$join=array('JOIN('=>$this->getAllArray('offline_messages',	
+						array('offline_messages.user_id','offline_messages.sender_id'), 
+						array($this->user_id,$this->user_id), 'OR','','','','',$attr) 
+  			  		,' ) AS'=>array(' Latest '=>
+                      array('offline_messages.sent_on = Latest.recent_date ',' offline_messages.user_id=Latest.user_id','
+                      offline_messages.sender_id=Latest.sender_id')),            
+    			  'LEFT JOIN'=>array('message_log '=>
+                      array('offline_messages.user_id=message_log.user_id ','offline_messages.sender_id=message_log.sender_id')),
+			);
+		$messages=$this->getAllArray('offline_messages',$where , $condition, '',$limit,'offline_messages.sent_on',$order,$join,$data);
+		if(isset($data['debug']))
+		return $messages;
 		return $this->getextradata($messages);
 	}		
    return null;
@@ -239,16 +234,17 @@ if($table==' alerts ')
 		$username=$posted['username'];
 			$this->insert('offline_messages',array('user_id','sender_id','message'),array($receiver_id,$sender_id,$message));
 			$inserted_id=$this->id();
+			$datetime=$this->get_datetime();
 			$chat_msg='<div id="sentusermessage_'.$inserted_id.'">
 			<div>
 			<img src="'.$image.'" class="rounded-circle mb-0 mt-0" height="30" width="30"> '. $username.':
 			</div>					
 			<span class="usermessage">'.$message.'&nbsp;&nbsp;'.'<i class="fas fa-check text-success resolved"></i></span>
-			<p><span class="ticketcommentdate"><time class="chattimeago"" datetime="'.$this->get_datetime().'">'.$this->get_datetime().'</time></span></p>';
+			<p><span class="ticketcommentdate"><time class="chattimeago"" datetime="'.$datetime.'">'.$datetime.'</time></span></p>';
 			
 			echo json_encode($chat_msg);
-			$this->query="INSERT IGNORE INTO message_log (user_id,sender_id) values(?,?)";
-			$this->execute(array($receiver_id,$sender_id));
+			$attr=array('ignore'=>true);
+			$this->insert('message_log',array('user_id','sender_id'),array($receiver_id,$sender_id),$attr);		
 	}
 
 }

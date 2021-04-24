@@ -207,11 +207,7 @@ function reply($reply) {
 		echo "error";
 	exit();
 }
-
 }
-
-
-
 
 if (isset($_GET['post-slug']) && !empty($_GET['post-slug'])) {
 	$slug = $_GET['post-slug'];	

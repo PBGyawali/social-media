@@ -1,6 +1,5 @@
-<?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(USER_CLASS.'publicview.php');	
-class stats extends publicview{	
+<?php 
+class stats extends publicview{		
 	function getAllUsers(){		
 		return $this->CountTable('users'); 		
 	}	
@@ -116,9 +115,9 @@ class stats extends publicview{
 				return $this->total('posts','views','user_id',$_SESSION["id"]);			
 			return 0;
 		}	
-		function get_progress_points(){
-			if 	(isset($_SESSION['id'])){					
-					$row=$this->UsersArray();
+		function get_progress_points($value=null){
+			if(isset($_SESSION['id'])||$value!=null){					
+					$row=$this->UsersArray($value);
 					$points=25;
 					if(!empty($row['profile_image'])){$points=$points+20;} 
 					if(!empty($row['first_name'])){$points=$points+5;} 				

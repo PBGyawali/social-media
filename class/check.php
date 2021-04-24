@@ -94,16 +94,17 @@ class check{
         }
 
         function is_empty($required)
-        {  global $errors;    
+        {  
+            $fielderrors =array();    
             foreach($required as $key => $value) 
             {
                 if (empty($value))
                 {	
-                    array_push($errors,$key.' field is empty <br>');				
+                    array_push($fielderrors,$key.' field is empty <br>');				
                 }			
             }
-            if ($errors)
-                return $errors;
+            if ($fielderrors)
+                return implode('',$fielderrors);
             return false;
         }
 
@@ -122,17 +123,17 @@ class check{
             return NULL;            
         }
 
-        function check_array($value)
-	    {
+        
+
+        function check_array($value,$key=null)	{
             if ($value===null)
-                return array();
-            else if (is_array($value))
-                return $value;
-            else
-                return array($value);	
-	    }
-
-
+            return array();
+            elseif (is_array($value))						
+                return $value;		
+            elseif($key)
+                return array($key=>$value); 
+            return array($value);		
+        }
 
 
 }

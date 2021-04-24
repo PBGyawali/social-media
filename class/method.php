@@ -6,7 +6,15 @@ class method extends check{
 		return date("Y-m-d H:i:s",  STRTOTIME(date('h:i:sa')));
     }
     
-
+    function parms($string,$data) {
+		$indexed=$data==array_values($data);
+		foreach($data as $k=>$v) {
+			if(is_string($v)) $v="'$v'";
+			if($indexed) $string=preg_replace('/\?/',$v,$string,1);
+			else $string=str_replace(":$k",$v,$string);
+		}
+		return $string;
+	}
     function Slug(String $string)
 	{
 		$string = strtolower($string);
@@ -14,9 +22,9 @@ class method extends check{
 		return $slug;
 	}
 
-	function response($msg=null,$status=null,$data=null,$element=null){
+	function response($response=null,$status=null,$data=null,$element=null){
         $finalresponse = array(
-			'response'  => $msg,
+			'response'  => $response,
 			'status'    => $status,
             'data'      => $data, 
 			'element' => $element
@@ -54,7 +62,7 @@ class method extends check{
         }
 
         @header("location: ".$path);
-        exit;
+        
     }
 
     function setSession($names, $values){

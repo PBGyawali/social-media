@@ -55,9 +55,9 @@ class file extends method{
 										//Directory does not exist, so lets create it with true variable allowing to create nested folders
 										mkdir($dir, 0755, true);
 
-									if ($type=='image' && !$this->compressImage($file['tmp_name'], $target))								
+									if ($type=='image'  && !$this->compressImage($file['tmp_name'], $target))								
 											array_push($errors, '<div class="alert alert-danger">Failed to transfer image. Image compression error</div><br>');
-									elseif ($type!='image'&& !move_uploaded_file($file['tmp_name'], $target))								
+									elseif (!move_uploaded_file($file['tmp_name'], $target))								
 											array_push($errors, '<div class="alert alert-danger">Failed to upload file. Please check file settings for your server </div><br>');
 									else	
 											$file_name= $new_random_name;
@@ -93,11 +93,16 @@ class file extends method{
 		if ($info['mime'] == 'image/jpeg') 
 		$image = imagecreatefromjpeg($source);  
 		elseif ($info['mime'] == 'image/gif') 
-		$image = imagecreatefromgif($source);  
-		elseif ($info['mime'] == 'image/png') 
-		$image = imagecreatefrompng($source); 
-		elseif ($info['mime'] == 'image/bmp') 
-		$image = imagecreatefrombmp($source); 		
+		$image = imagecreatefromgif($source); 
+		elseif ($info['mime'] == 'image/bmp')
+		$image = imagecreatefrombmp($source);
+		elseif ($info['mime'] == 'image/png')
+		$image = imagecreatefrompng($source);
+		else
+			return  false;	
+		if ($info['mime'] == 'image/png') 
+		$result=imagepng($image, $storepath, 9); 
+		else
 		$result=imagejpeg($image, $storepath, $quality); 
 		imagedestroy($image);
 		return $result;  

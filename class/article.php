@@ -55,13 +55,10 @@ function getTrendingPublishedPostsByTopic($topic_id) {
 	return $this->get_data('name','topics','id',$id);	
 }
 function getPostsByTopic($topic_id,$orderby=null,$order='DESC') {
-	$this->query= "SELECT * FROM posts ps 	WHERE ps.id IN	(SELECT pt.post_id FROM post_topic pt 
-	WHERE pt.topic_id=? GROUP BY pt.post_id HAVING COUNT(1) = 1) AND published='1' ORDER BY ";
-	if ($orderby)
-	$this->query.=$orderby." ".$order.",";
-	$this->query.=" created_at ".$order;
-	$this->execute($topic_id);	
-	$posts =  $this->statement_result();
+$cattr=array('debug'=>true,'groupby'=>'pt.post_id','fields'=>'pt.post_id','having'=>'COUNT(1)=1)');
+$condition=array('IN '=>$this->getAllArray('post_topic pt','pt.topic_id','topic_id','','','','','',$cattr));
+$postattr=array('whereparameter'=>array('ps.id '=>$condition,'AND published='=>'"1"'));
+$posts=$this->getAllArray('posts ps','',$topic_id,'','',array($orderby,'created_at '),$order,'',$postattr);
 	if($posts){
 		$posts= $this->getextradata($posts);
 		return $posts;
@@ -69,10 +66,10 @@ function getPostsByTopic($topic_id,$orderby=null,$order='DESC') {
 	return null;
 }
 
-function getPostTopic($post_id){// Receives a post id and * Returns topic of the post
-	$this->query = "SELECT * FROM topics WHERE id=	(SELECT topic_id FROM post_topic WHERE post_id= ? ) LIMIT 1";
-	$this->execute($post_id);
-	return $this->get_array();	
+function getPostTopic($post_id=2){// Receives a post id and * Returns topic of the post
+	$attr=array('fields'=>'topic_id','debug'=>true);	
+	$join=array('WHERE id=('=>$this->get_data('topic_id','post_topic','','','','','',$attr));	
+	return $this->getArray('topics',array('post_id'),array($post_id),array(')'),1,$join);	
 }
 
 function getPost($post_slug){// Returns a single post
@@ -85,12 +82,9 @@ function getPost($post_slug){// Returns a single post
 }
 function getAllPosts(){
 	if($this->is_user()){
-		$this->query ="SELECT * FROM posts ";
-		if(!$this->is_admin()) 
-		$this->query .=" WHERE user_id='$this->user_id' ";
-		$this->query .=" ORDER BY published ";	
-		$this->execute(); 	
-		$posts = $this->statement_result();
+		$conditions=$placeholder=array();		
+		if(!$this->is_admin()) {$placeholder[]=' user_id ';	$conditions[]=$this->user_id;}			
+		$posts = $this->getAllArray('posts',$placeholder,$conditions,'','','published');	
 		if($posts)
 				return $this->getextradata($posts,false);
 		return null;	
@@ -127,19 +121,21 @@ function togglePublishPost($post_id,$value){// toggle visibility of blog post
 }
 
 function createPost($values){		
+	$featured_image='';
 		$title = $this->clean_input($values['title']);
 		$body = $values['body'];		
 		$user_id = $this->user_id;
-		$errors=$this->is_empty(array('Post title'=>$title,'Post body'=>$body));
-		if (empty($this->user_id))  {
-			array_push($this->errors, "You must log in to perform this action");
-			$this->response=$this->errors;
-			$this->status="error";
+		$fielderrors=$this->is_empty(array('Post title'=>$title,'Post body'=>$body));
+		if (empty($user_id))  {
+			$this->response="You must log in to perform this action";
+			array_push($this->errors, $this->response);
+			$this->status="danger";
 		}
-		else if ($errors){
-			$this->response=$errors;
-			$this->status="error";
-			$this->errors=$errors; 
+		else if ($fielderrors){
+			$this->status="danger";
+			$this->response=$fielderrors;
+			$this->errors[]=$this->response; 
+			
 		}
 		if (isset($values['topic_id'])) 
 			$topic_id = $this->clean_input($values['topic_id']);	
@@ -155,8 +151,12 @@ function createPost($values){
 			$post_slug = $this->Slug($title);
 			// Ensure that no post is saved twice. 	
 			$result=$this->CountTable('posts','slug',$post_slug);
-			if ($result> 0)  // if post exists
-				array_push($this->errors, "A post already exists with that title.");
+			if ($result> 0){
+					// if post exists
+					$this->response= "A post already exists with that title.";
+					array_push($this->errors, $this->response);
+					$this->status="danger";
+			}  
 			else
 			{				
 				//set the image storage directory
@@ -168,8 +168,8 @@ function createPost($values){
 					$errors=$result[1];
 					if ($errors){
 						$this->response=$errors;
-						$this->status="error";
-						$this->errors=$errors; 
+						$this->status="danger";
+						$this->errors[]=$errors; 
 					}					
 				}			
 				// create post if there are no errors in the form
@@ -207,18 +207,19 @@ function createPost($values){
 							$this->response=" A new Post was created successfully";
 							$this->status='success';
 							$this->activitylogs($user_id, 'You created a ','create','post',$inserted_post_id,' '.$title);
-							} 
-							else{//delete already uploaded image in case of error
+						} 
+						else{//delete already uploaded image in case of error
 								$this->imageDelete($dir.$featured_image);
-								$this->status="error";
-								$this->response=$this->errors;
+								$this->status="danger";
+								
 							}		
-								}
-							}
+					}
 				}
-		}  
-		$this->setSession('message',$this->response );
-		$finalresponse = [$this->response,$this->status,$this->row];
+			}
+		}
+		//$this->setSession('message',$this->response );
+		//$this->setSession($this->status,$this->response);
+		$finalresponse = [$this->response,$this->status,$this->row,$this->errors];
 			return $finalresponse;
 	}
 
@@ -234,10 +235,10 @@ function createPost($values){
 		if (empty($this->user_id)) {
 			array_push($this->errors, "You must log in to perform this action");
 			$this->response=$this->errors;
-			$this->status="error";} 
+			$this->status="danger";} 
 		else if ($errors){
 			$this->response=$errors;
-			$this->status="error";
+			$this->status="danger";
 			$this->errors=$errors;
 		}
 		$user_id=$this->clean_input($values['user_id']);	
@@ -258,7 +259,7 @@ function createPost($values){
 				{ // if post exists
 					array_push($this->errors, "A post already exists with that title.");
 					$this->response=$this->errors;
-					$this->status="error";			
+					$this->status="danger";			
 				}
 				else
 				{			if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK){		
@@ -305,13 +306,13 @@ function createPost($values){
 									else {
 										array_push($this->errors,"No change in update was made");
 										$this->response=$this->errors;
-										$this->status="error";
+										$this->status="danger";
 									}								
 								}
 								else {
 									array_push($this->errors,"Database entry was not successful");
 									$this->response=$this->errors;
-									$this->status="error";
+									$this->status="danger";
 								}
 							}
 				}

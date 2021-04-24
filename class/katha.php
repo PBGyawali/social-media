@@ -134,9 +134,10 @@ function UsersArray($placeholder=null,$value=null,$combine='AND'){
 		$marker= implode(', ', array_fill(0, sizeof($column), '?'));
 		$this->query = "INSERT INTO $table ($column_condition) VALUES($marker)";		
 		return $this->execute($value);
-	}
-	function UpdateDataColumn($table,$column,$value,$placeholder,$condition,$combine='AND'){	
-		$column_condition=$this->implode_array($column,'?',',');
+	}	
+	function UpdateDataColumn($table,$column,$value=null,$placeholder,$condition,$combine='AND'){	
+		if($value===null)	$column_condition=$this->implode_array($column);
+		else				$column_condition=$this->implode_array($column,'?',',');
 		$value=$this->check_array($value);
 		$condition=$this->check_array($condition);
 		$placeholder_condition=$this->implode_array($placeholder,'?',$combine);
@@ -216,13 +217,13 @@ function Delete($table,$placeholder=NULL,$conditions=NULL,$combine='AND'){
 	return $this->execute($conditions);	
 }
 
-function total($table,$column,$placeholder=null,$value=null,$combine='AND')
-{
+function total($table,$column,$placeholder=null,$value=null,$combine='AND'){
 	$value=$this->check_array($value);
+	$column=$this->check_array($column);
+	$columnvalue=$this->implode_array($column,'',') + SUM(');	
 	$row_condition=$this->implode_array($placeholder,'?',$combine);
-	$this->query = "SELECT IFNULL(SUM($column), 0) AS total FROM $table ";
-	if(!empty($row_condition)) 
-		$this->query .= " WHERE ".$row_condition;				
+	$this->query = "SELECT IFNULL (SUM($columnvalue), 0) AS total FROM $table ";
+	if($row_condition) 	$this->query .= " WHERE ".$row_condition;				
 	$this->execute($value);
 	$row=$this->get_array();
 	if ($row)
@@ -230,42 +231,42 @@ function total($table,$column,$placeholder=null,$value=null,$combine='AND')
 	return 0;
 }
 
-function implode_array($placeholder=null,$conditions=null,$combine='AND'){
+function implode_array($placeholder=null,$conditions=null,$combine="AND",$compare="=",$quotes="'"){
 	$finalarray=array();
 	if ($placeholder==null)
-		return null;
+			return null;
 	elseif (!is_array($placeholder)&&!empty($placeholder) && empty($conditions))						
-		return " ".$placeholder." "; 
+			return " ".$placeholder." "; 
 	elseif (!is_array($placeholder) && !empty($conditions) && !is_array($conditions))		
 			if	($conditions=='?')
-				return " ".$placeholder."="."?"." ";
+				return " ".$placeholder.$compare."?"." ";
 			else
-				return " ".$placeholder."="."'".$conditions."'"." "; 		
+				return " ".$placeholder.$compare.$quotes.$conditions.$quotes." "; 		
 	elseif (is_array($placeholder)&& empty($conditions))				
-		return implode(' '.$combine.' ', $placeholder);
+					$finalarray=$placeholder;
 	elseif (is_array($placeholder)&& is_array($conditions) && !empty($conditions))							
 			if ( in_array('?',$conditions))
 				foreach($conditions as $key=> $condition)						 
-					array_push($finalarray," ".$placeholder[$key]."=".$condition." ");
+					array_push($finalarray," ".$placeholder[$key].$compare.$condition);
 			else
 				foreach($conditions as $key=> $condition)							
-					array_push($finalarray," ".$placeholder[$key]."="."'".$condition."'"." ");		
+					array_push($finalarray," ".$placeholder[$key].$compare.$quotes.$condition.$quotes);		
 	elseif (is_array($placeholder)&& !is_array($conditions) && !empty($conditions))					
 			if ($conditions=='?')
 				foreach($placeholder as $key=> $place)
-					array_push($finalarray," ".$place."=".$conditions." ");
+					array_push($finalarray," ".$place.$compare.$conditions);
 			else
 				foreach($placeholder as $key=> $place)
-					array_push($finalarray," ".$place."="."'".$conditions."'"." ");		
+					array_push($finalarray," ".$place.$compare.$quotes.$conditions.$quotes);		
 	else					
 			if ( in_array('?',$conditions))						
 				foreach($conditions as $key=> $condition)							
-					array_push($finalarray," ".$placeholder."=".$condition." "); 
+					array_push($finalarray," ".$placeholder.$compare.$condition); 
 			else						
 				foreach($conditions as $key=> $condition)
-					array_push($finalarray," ".$placeholder."="."'".$condition."'"." "); 
+					array_push($finalarray," ".$placeholder.$compare.$quotes.$condition.$quotes); 
 	if ($combine)
-		return implode($combine,$finalarray); 
+			return implode(' '.$combine.' ',$finalarray);  
 	return  $finalarray;    
 }
 
