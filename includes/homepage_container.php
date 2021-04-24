@@ -2,7 +2,7 @@
   <div class="header">
   	<h2>Please Log in or sign up</h2>
   </div>
-  <?php displaymessage();?>
+  <?php //displaymessage();?>
   <form method="post" action="">  
 <div class=links>
 <a href="login" class="login_link"><span></span><span></span><span></span><span></span>Log in</a>

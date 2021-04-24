@@ -2,7 +2,7 @@
     <div class="header">  	
       <h2>LOGIN</h2>
   </div>
-  <?php repeatmessage();?>
+  <span class="position-absolute text-center w-100"id="message" style="z-index:10;"><?php ///repeatmessage();?></span>
   <form method="post" class="user_form" action="<?php echo htmlspecialchars(BASE_URL);?>#login" autocomplete="on">
   <div class="social">
         <h4>Connect with</h4>

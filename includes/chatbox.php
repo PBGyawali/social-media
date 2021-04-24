@@ -36,7 +36,7 @@ border: none; background: #050505; min-height: 50px;
 </style>
 </head>
 
-<div class="container">
+<div class="container d-none d-sm-block">
     <div class="row">
         <div class=" col xs-0 col sm-0 col-md-12">
             <button class="open-button bg-white position-fixed p-0 border-0 mb-5" role="button" 
@@ -68,7 +68,7 @@ border: none; background: #050505; min-height: 50px;
 								$icon = '<i class="fa fa-circle text-danger"></i>';
 								if($user['login'] == 'home')
 									$icon = '<i class="fa fa-circle text-success"></i>';
-								if($user['id'] != $_SESSION['id']){
+								if($user['id'] != @$_SESSION['id']){
 									echo '<a class="list-group-item-action">
 										<img src="' .USER_IMAGES_URL.$chat_object->image_check($user["profile_image"],USER_IMAGES_DIR).'" class="img-fluid rounded-circle img-thumbnail" width="50" />
 										<span class="ml-1"><strong>'.$user["username"].'</strong></span>

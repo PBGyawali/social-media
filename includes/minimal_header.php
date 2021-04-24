@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="<?php echo CSS_URL.'parsley.css'?>" >
 		<link rel="stylesheet" href="<?php echo CSS_URL.'bootstrap_style.css'?>" >
 		<link rel="stylesheet" href="<?php echo CSS_URL?>jquery-confirm.min.css">
-		<script type="text/javascript" src="<?php echo JS_URL.'jquery.min.js'?>"></script>
+		
 		<title><?=ucwords($page)?></title>
 
 	

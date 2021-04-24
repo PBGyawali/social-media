@@ -59,8 +59,7 @@
 <?php if($check->is_user()):?> 
 
 <div class="text-center bg-dark fixed-bottom text-warning"><em><strong style= "color:yellow;">
-In this session you have navigated our website
-<?php include_once(USER_INCLUDES."sessioncount.php");?>  times.</em></strong></style></div>
+Your session navigation count: <?php include_once(USER_INCLUDES."sessioncount.php");?>  </em></strong></style></div>
 <?php endif?> 
 <script>
         setTimeout(function(){

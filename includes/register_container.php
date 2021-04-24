@@ -2,13 +2,12 @@
   <div class="header">
   	<h2>Register</h2>
   </div>
-  <?php repeatmessage();?>
-    <div id="error_msg"></div> 
+  <?php //repeatmessage();?>
+     <span id="error_msg"></span>
   <form name="myForm" class="user_form" id="register_form" method="post" action="<?php echo htmlspecialchars(BASE_URL);?>#register" >
      
   <div class="form-input-group"> 
-    <label>Username</label><span class="text-right position-relative"> </span>
-    		
+    <label>Username</label><span class="text-right position-relative"> </span>    		
   	  <input type="text" name="register_username" id="register_username" class="form-control datacheck" data-object="Username" value="" required data-parsley-minlength="5" data-parsley-trigger="on change">
   	</div>
   	<div class="form-input-group">
