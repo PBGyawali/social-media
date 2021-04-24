@@ -1,22 +1,23 @@
-<?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
- include_once(USER_CLASS.'publicview.php');
-$katha=new publicview();
+<?php
+include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 include_once(USER_SERVER.'main_server.php');
+$company=$katha->get_data(array('website_logo','website_name'),'website_data');;
+$website_name=$company['website_name'];
+$website_logo=$company['website_logo']; 
 include_once(USER_INCLUDES.'new_message.php');
+include_once(USER_INCLUDES.'minimal_header.php');
 if (isset($_GET['token'])) {$_SESSION['token'] = $_GET['token'];} 
-include_once(USER_INCLUDES . 'minimal_header.php') ;
 ?>
-	<title>Password Reset PHP</title>
-	<link rel="stylesheet" href="<?= CSS_URL?>outside_login.css">
+<link rel="stylesheet" href="<?= CSS_URL?>outside_login.css">
+<title><?= $website_name; ?></title>
 </head>
-<body><div class="bigtext">Welcome to "<?php echo $katha->WebsiteName(); ?>"</div>
-  <div class="image" ></div>
+<body>
+<?php include_once(INCLUDES.'main_menu_top.php')?>
   <div class="container">
     <div class="header">  	
       <h2>RESET PASSWORD</h2>
   </div>
-	<form class="login-form" action="<?= BASE_URL?>new_password.php" method="post">
-	
+	<form class="login-form" action="<?= BASE_URL?>new_password.php" method="post">	
 	<?php displaymessage();?>
 		<h2 class="form-title">New password</h2>
 		<!-- form validation messages -->

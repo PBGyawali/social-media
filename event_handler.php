@@ -28,27 +28,26 @@ if (isset($_POST['delete-message'])) {
 function updatePostviews($post_id,$userid,$browser)
 {		global $stats;				
    // is post visitor unique for this session? If not, increase counter value by one
-       if(!isset($_SESSION['page='.$post_id]))
-           {
-               $counter_value =$stats-> get_data('views','posts','id='.$post_id);
-               $_SESSION['page='.$post_id]="yes";
-               $counter_value++;
-               $stats->query = "UPDATE posts set views=? WHERE id = ?";
-               $stats->execute(array($counter_value ,$post_id));
-               updatePostview($post_id,$userid,$browser);	
-               return $counter_value;	  
-           } 
-           return false;
+    if(!isset($_SESSION['page='.$post_id]))
+        {
+            $counter_value =$stats-> get_data('views','posts','id',$post_id);
+            $_SESSION['page='.$post_id]="yes";
+            $counter_value++;
+            $stats->UpdateDataColumn('posts','views',$counter_value,'id',$post_id);               
+            updatePostview($post_id,$userid,$browser);	
+            return $counter_value;	  
+        } 
+        return false;
 }
 function updatePostview($post_id,$user_id,$browser)
 {		global $stats;				
     // is post visitor unique for this session? If not, increase counter value by one
-        if(isset($_SESSION['page='.$post_id]))
-            {
-                $stats->query = "INSERT INTO visitor_log ($browser, post_id, owner_id) 
-                VALUES ('1', ?, ?) ON DUPLICATE KEY UPDATE $browser=$browser+1  ";
-                $stats->execute(array($post_id,$user_id));
-            }	
+    if(isset($_SESSION['page='.$post_id]))
+        {
+            $attr=array('duplicate'=>$browser.'='.$browser.'+1');
+            return $stats->insert('visitor_log',array($browser, 'post_id', 'owner_id'),array(1,$post_id,$user_id),$attr);
+            
+        }	
 }
 
 

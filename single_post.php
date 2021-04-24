@@ -1,6 +1,6 @@
 <?php 
 	include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-	//include_once(ADMIN_CLASS.'katha.php');
+	//
 	$article=new article;
 	include_once(USER_SERVER.'comment_server.php');
 	include_once(USER_SERVER.'user_action_server.php'); 
@@ -11,7 +11,7 @@
 	{foreach($posts as $post)
 	{(!empty($post))?$views=$post['views']:$views='';
 	(!empty($post))?$title=$post['title']: $title='';}}
-	//$katha=new katha();	
+	//$katha=new publicview();	
  ?>
 <title> <?= $title ?></title>  
   <link rel="stylesheet" type="text/css" href="<?php  echo CSS_URL?>post_style.css">
@@ -213,6 +213,7 @@
 </div><!-- container div end -->
 </body>
 </html>
+<?php include_once( USER_INCLUDES . 'minimal_footer.php') ?>
 <?php include_once( USER_INCLUDES . 'footer.php') ?>
 <script type="text/javascript" src="<?= JS_URL?>comment_system.js" ></script>
 <script type="text/javascript" src="<?= JS_URL?>user_action.js" ></script>

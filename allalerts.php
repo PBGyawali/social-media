@@ -23,7 +23,7 @@ $alerts =$records-> allalerts();
 <div class="card shadow mb-1" id="alert_<?php echo $alert['id']; ?>">
 <div class="card-header d-flex text-center justify-content-between align-items-center">
 <h6 class="text-primary font-weight-bold m-0 ">
-<a class="d-flex align-items-center dropdown-item " style="cursor:pointer">
+<a class="d-flex align-items-center dropdown-item " style="cursor:pointer;white-space: normal;">
     <div class="mr-3">
     <?php 
         $iconclass=' text-primary ';
@@ -40,7 +40,7 @@ $alerts =$records-> allalerts();
             if($alert['type']== $alerttype) 
                 break;												                    
     ?>										
-    <div class="icon-circle "><i class="fa fa-<?=$icontype[$key].$iconclass?>"></i></div>               
+    <div class="icon-circle d-none d-sm-inline-block"><i class="fa fa-<?=$icontype[$key].$iconclass?>"></i></div>               
     </div>
     <div><span class="small text-gray-500"><?php echo $alert['alert_date']; ?></span>
         <p><?php echo $alert['alert']; ?></p>
@@ -138,20 +138,7 @@ $(document).ready(function()
                 }
             }
         });
-  
-
-
     });
-
-
-
-  
-  
 });
-
-
-
-
-
-
 </script>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>

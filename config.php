@@ -4,11 +4,22 @@
     define('DB_USERNAME', 'root');
     define('DB_PASSWORD', 'root');
     define('DB_NAME', 'social_media');
- 
-    date_default_timezone_set("Europe/Berlin");
+    if (isset($_SERVER['HTTP_HOST']))
+    {
+        $base_url = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
+        $base_url .= '://'. $_SERVER['HTTP_HOST'];
+        //$base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+    }    
+    else
+    {
+        $base_url = 'http://localhost';
+    } 
 
-     // define global constants
-    define("BASE_URL", "http://localhost/social_media/"); //defines the base url to start from in the server
+    date_default_timezone_set("Europe/Berlin");
+     // define global constants   
+     define("BASE_URL", $base_url.'/social_media/' ); //defines the base url to start from in the server 
+ 
+    //define("BASE_URL", "https://ab3232366ebf.ngrok.io/social_media/"); //defines the base url to start from in the server
     define("UPLOAD_URL", BASE_URL."uploads/");
     define("ADMIN_URL", BASE_URL."admin/");
     define("ADMIN_SERVER_URL", ADMIN_URL."server/");
@@ -32,6 +43,7 @@
     define("USER_CLASS", BASE_PATH."class/");
     define("ADMIN_CLASS", BASE_PATH."class/");
     define("ADMIN_DIR", BASE_PATH."admin/");
+    define("INCLUDES", BASE_PATH."includes/");
     define("ADMIN_INCLUDES", ADMIN_DIR."includes/");
     define("USER_INCLUDES", BASE_PATH."includes/");
     define("ADMIN_SERVER", ADMIN_DIR."server/");
@@ -54,9 +66,7 @@
     define("TIME_PERIOD", "10");//10 minutes    
     define("COOKIE_EXPIRE", 60*60*24*30); //30 days
     define("COOKIE_PATH", "/");  
-    define("SITE_NAME", "hamro katha");
-   
-
+    define("SITE_NAME", "Hamro Katha"); 
     $page=$page_name = pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME);
 
 ?>

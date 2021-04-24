@@ -1,16 +1,13 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 $selected_topic='';
-include_once(USER_SERVER. 'post_functions.php'); 
- include_once(USER_INCLUDES. 'minimal_header.php'); 
+include_once(USER_SERVER. 'post_functions.php');
+ include_once(USER_INCLUDES. 'minimal_header.php');
  include_once(USER_INCLUDES.'sidebar.php');
  include_once(USER_INCLUDES.'new_message.php');
- if(!$check->is_login())  
-$method->redirect(BASE_URL."#login",'error','You must log in first to view the page');?>
+ if(!$method->is_login())  
+$method->redirect(BASE_URL."#login",'danger','You must log in first to view the page');?>
 	        <div class="col-sm-12 py-4">
-			<?php displaymessage();?>
-			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        	<span id="message"></span>
+	        	<span class="text-center position-absolute w-100"id="message" style="z-index:10"><?php displaymessage();?></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -129,13 +126,11 @@ $method->redirect(BASE_URL."#login",'error','You must log in first to view the p
 </body>
 </html>
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 <script type="text/javascript" src="<?php echo JS_URL.'parsley.min.js'?>"></script>	
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
 <link rel="stylesheet" href="<?php echo CSS_URL.'parsley.css'?>" >	
 <script>
- setTimeout(function(){
-            $('.alert').slideUp();
-        }, 3000);
 	$('#post_form').parsley();	
 	CKEDITOR.replace('body');
 </script>

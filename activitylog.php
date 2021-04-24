@@ -73,6 +73,7 @@ $logs=$records->useractivitylogs();
 
 </div>
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 <script type="text/javascript">
 $(document).ready(function()
 {

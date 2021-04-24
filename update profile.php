@@ -140,6 +140,7 @@ $email=(isset($_SESSION['email']))?$_SESSION['email']:'';
 	    </div>
 	</div>
 	<?php include_once(USER_INCLUDES.'minimal_footer.php');?>
+	<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 	<script src="<?php echo JS_URL?>jquery.fancybox.min.js"></script>
 	<link rel="stylesheet" href="<?php echo CSS_URL?>jquery.fancybox.min.css" />
 	<script src="<?php echo JS_URL.'confirmdefaults.js'?>"></script>

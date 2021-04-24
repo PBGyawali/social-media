@@ -1,6 +1,5 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+$katha = new publicview();
 if(!$katha->is_login())
 {   
     $_SESSION['error']="You must log in to view that page";
@@ -301,6 +300,7 @@ include_once(USER_INCLUDES.'sidebar.php');
 
                   </div></div></div></div></div></div>
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 <script>
 
 

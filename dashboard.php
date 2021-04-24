@@ -170,15 +170,7 @@ $progresspoints=$stats->get_progress_points();
 					</div><!--card siv ends-->					
 				</div>			
 			</div>			
-			<footer class="bg-white sticky-footer">
-        <div class="container my-auto">		
-			<div class="text-center my-auto copyright"><span>Copyright © <?= $website_name?> <script>
-                  document.write(new Date().getFullYear())
-                </script></span>			
-		</div>			
-			<a class="no-border fixed-bottom text-right size-30 scroll-to-top" href="#page-top"><i class="fas  fa-4x fa-angle-up"></i></a>
-        </div>
-    </footer>
+			<?php include_once(USER_INCLUDES.'footer_top.php');?>
 		</div>
 	</div>	
 </body>
@@ -189,3 +181,4 @@ $progresspoints=$stats->get_progress_points();
 <script type="text/javascript" src="<?= JS_URL?>chart.min.js"></script>
 <script type="text/javascript" src="<?= JS_URL?>graph.js"></script> 	
 
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>

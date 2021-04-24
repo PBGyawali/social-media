@@ -3,9 +3,7 @@ $article=new article;
 $posts =$article-> getAllPosts();
 include_once(USER_INCLUDES. 'minimal_header.php'); 
 include_once(USER_INCLUDES.'sidebar.php');
-if(!$check->is_login())	header("location:".$article->base_url."");
-?>	
-	
+if(!$article->is_login())	header("location:".$article->base_url."");?>
 	        <div class="col-sm-12 py-4">
 			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
 			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
@@ -30,14 +28,14 @@ if(!$check->is_login())	header("location:".$article->base_url."");
 	            				<thead>
 	            					<tr>
 										<th>Title</th>
-										<?php if($check->is_admin()):?>	
+										<?php if($article->is_admin()):?>	
 										<th>Author</th>
 										<?php endif?>
 										<th>Views</th>
 										<th>Created on</th>
 										<th>Updated on</th>
 										<th>Published</th>
-										<?php if($check->is_admin()):?>							
+										<?php if($article->is_admin()):?>							
 										<th>Anonymous</th>
 										<?php endif?>
 										<th>Action</th>
@@ -67,18 +65,18 @@ if(!$check->is_login())	header("location:".$article->base_url."");
 									<i class="fa fa-times btn btn-danger"></i><span style="display:none;">2</span>		
 								</td>
 							<?php endif ?>
-							<?php if($check->is_admin()):?>	
+							<?php if($article->is_admin()):?>	
 							<td class="anonymity">
 							<?php echo $post['anonymity'];?></td>
 							<?php endif ?>							
 								<td class="buttons">
-								<form  action='post' class='userlistform' target="_blank" method='POST' >
+								<form  action='post.php' class='userlistform' target="_blank" method='POST' >
 								<input type='hidden' name='id' value='<?php echo $post['id'] ?>'>
 							<button type="submit" name="edit-post" title="edit"class="fa fa-edit btn btn-primary btn-sm edit_button" data-action="fetch_single" data-id="<?php echo $post['id'] ?>"></button>							
 							</form>							
 								&nbsp;
 								<button type="button" name="delete_button" title="delete" class="fa fa-trash btn btn-danger btn-sm delete_button" data-action="delete" data-id="<?php echo $post['id'] ?>"></button>
-								<?php if($check->is_admin()):?>	
+								<?php if($article->is_admin()):?>	
 								<?php if ($post['published'] == true): ?>
 										&nbsp;
 									<button type="button"  title="unpublish" class="fa fa-times btn btn-warning btn-sm toggle action_button" data-action="unpublish" data-id="<?php echo $post['id'] ?>"></button>
@@ -107,6 +105,7 @@ if(!$check->is_login())	header("location:".$article->base_url."");
 
 
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 <script type="text/javascript" src="<?php echo JS_URL.'datatables.min.js'?>"></script>
 <link rel="stylesheet" href="<?php echo CSS_URL.'datatables.min.css'?>" >
 <script>
@@ -114,29 +113,22 @@ if(!$check->is_login())	header("location:".$article->base_url."");
 $(document).ready(function(){
 
 	var dataTable = $('#list').DataTable();
-
+	var url='server/post_functions.php'//$('#post_form').attr('action');
+	$('#post_form').parsley();
 	$('.toggle').on( 'click', function (e) {
         // Get the column API object
-        var column = table.column( $(this).attr('data-column') );
+        var column = dataTable.column( $(this).attr('data-column') );
         // Toggle the visibility
         column.visible( ! column.visible() );
-    } );
-
-
-		$('#post_form').parsley();
-
+	} );
+	
 	$('#post_form').on('submit', function(event){
 		for ( instance in CKEDITOR.instances )
-{
-CKEDITOR.instances[instance].updateElement();
-}
-		event.preventDefault();
-	
-
+		{
+		CKEDITOR.instances[instance].updateElement();
+		}
+		event.preventDefault();	
 		var data = new FormData(this);
-		
-		var url=$('#post_form').attr('action');
-			
 		if($('#post_form').parsley().isValid())
 		{	
 			$.ajax({
@@ -152,8 +144,7 @@ CKEDITOR.instances[instance].updateElement();
 				},
 				complete:function(){$('#submit_button').attr('disabled', false);	},
 				success:function(data)
-				{
-									
+				{									
 					$('#message').html(data.response);					
 					$('#list').prepend(data.status);					
 					setTimeout(function(){
@@ -167,7 +158,6 @@ CKEDITOR.instances[instance].updateElement();
 	$(document).on('click', '.edit_button', function(){		
 		var id = $(this).data('id');
 		var action=$(this).data('action');
-		var url=$('#post_form').attr('action');				
 		$.ajax({
 	      	url:url,
 	      	method:"POST",
@@ -198,10 +188,8 @@ CKEDITOR.instances[instance].updateElement();
 	});
 
 	$(document).on('click', '.action_button', function(){
-		
 		var id = $(this).data('id');
-		var action=$(this).data('action');		
-		var url=$('#post_form').attr('action');
+		var action=$(this).data('action');
 		var statusicon=$("#post_" + id + " .publish_status i"); 
 		var statusspan=$("#post_" + id + " .publish_status span");
 		var statusbutton=$("#post_" + id + " .buttons .toggle:button");				
@@ -210,16 +198,12 @@ CKEDITOR.instances[instance].updateElement();
 	      	method:"POST",
 	      	data:{id:id, action:action},
 	      	dataType:'JSON',
-			  complete:function(){		
-			  },
 	      	success:function(data)
 	      	{
 				var status = data.status;
-            var response = data.response;
-			
-			if (status=="error"){
-			alert(response);				
-					}
+				var response = data.response;
+			if (status=="error")
+			alert(response);
 					else{			 
 			switch(action) {
 			case "publish":
@@ -244,8 +228,6 @@ CKEDITOR.instances[instance].updateElement();
 			$(this).closest('tr').fadeOut('slow');
 			break;	
 			        }	} 
-
-	        	
 	            	}
 	    });
 	});
@@ -255,7 +237,6 @@ CKEDITOR.instances[instance].updateElement();
 		var id = $(this).data('id');
 		$row=$(this).closest('tr');
 		var action=$(this).data('action');
-		var url=$('#post_form').attr('action');	
 		if(confirm("Are you sure you want to remove it?"))
     	{
     		$.ajax({
@@ -266,10 +247,8 @@ CKEDITOR.instances[instance].updateElement();
     			success:function(data) {
 					var status = data.status;
             var response = data.response;
-			
-			if (status=="error"){$.alert(response);}
-					else{			
-					
+			if (status=="error")$.alert(response);
+					else{		
         			$('#message').html(response);        			
         			setTimeout(function(){
         				$('#message').html('');
@@ -279,12 +258,6 @@ CKEDITOR.instances[instance].updateElement();
         	});
     	}
   	});
-
-  	
-  	
-
 });
 
-</script><script>
-	CKEDITOR.replace('body');
 </script>

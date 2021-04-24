@@ -4,12 +4,12 @@ include_once(USER_INCLUDES.'minimal_header.php');
 include_once(USER_INCLUDES.'sidebar.php');
 $messages =$records-> allOfflineMessages();
 $user_id=(isset($_SESSION['id']))?$_SESSION['id']:'';
-include_once(USER_INCLUDES.'/chatbox.php');?>
-<div class="col-lg-12 col-xl-12 col-sm-12 col-xs-8 offset-xs-3 mr-5">
+?>
+<div class="col-sm-12 offset-xs-3 mr-5">
 <div class="d-flex flex-column " id="content-wrapper">
 <div id="content">    
 <div class="container-fluid ">   
- <div class="col-lg-12 col-xl-12 col-sm-6 p-0">    
+ <div class="col-lg-12 p-0">    
 <div class="d-flex flex-column" >    
 <h1 class="alert-primary text-center ">Your All Messages</h1></div></div> 
 <?php if (isset($messages) &&!empty($messages)): ?>
@@ -18,7 +18,7 @@ include_once(USER_INCLUDES.'/chatbox.php');?>
                             $float=$row_class='';                                                         
                             $background_class =' ';                 
                                                         ?>
-                    <div class="row "><div class="col"><div class="card shadow mb-3 alert " >
+                    <div class="row "><div class="col"><div class="card shadow mb-3 alert-notification " >
                                 <div class=" d-flex    justify-content-between align-items-center float-right" >
                                 <div class="dropdown-list-image mr-3 ">
                                     <img class="rounded-circle" src="<?= USER_IMAGES_URL.$records->image_check($chat['profile_image'],USER_IMAGES_DIR); ?>" height="60" width="60">                                    
@@ -54,20 +54,19 @@ include_once(USER_INCLUDES.'/chatbox.php');?>
                                         <?php endforeach ?> 
 <?php else: ?>
     <div class="row ">
-<div class="col-lg-12 col-xl-12 col-sm-6">
-<div class="card shadow mb-1 col-lg-12 col-xl-12 col-sm-6">
+<div class="card shadow mb-1 col-12  ">
 <div class="card-header d-flex text-center justify-content-between align-items-center">
-<h6 class="text-primary font-weight-bold m-0 ">
-<a class="d-flex align-items-center dropdown-item " >
+<h6 class="font-weight-bold m-0 ">
+<a class="d-flex align-items-center  " >
     <div class="mr-4"> 
-        <div class="icon-circle"><i class="fas fa-frown text-secondary fa-3x"></i></div>   
+        <div class="icon-circle d-none d-sm-inline-block"><i class="fas fa-frown text-secondary fa-3x"></i></div>   
     </div>
     <div>
-        <h2 class="text-center ml-3">You do not have any Messages. Please comeback Later.</h2>
+        <h2 class="text-center ml-3 text-dark">You do not have any Messages. Please comeback Later.</h2>
     </div>
 </a> </h6>
 
-</div>
+
 </div>
 </div>
 </div>
@@ -79,8 +78,6 @@ include_once(USER_INCLUDES.'/chatbox.php');?>
 
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
 <script type="text/javascript">
-
-
 $(document).ready(function()
 {
     $('#usermessage_0').hide();
@@ -130,9 +127,6 @@ $(document).ready(function()
                 }
             }
         });
-  
-
-
     });
     /*$('.reply_on_click').on('click', function()
     {      
@@ -173,3 +167,8 @@ $(document).ready(function()
 </script>
 <input type="hidden" name="" id="ajaxurl" value="<?= BASE_URL?>event_handler.php">
 <input type="hidden"id="user_message_server" value="<?= BASE_URL?>event_handler.php">
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
+<?php 
+
+
+include_once(USER_INCLUDES.'/chatbox.php');?>

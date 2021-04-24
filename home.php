@@ -1,12 +1,9 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');?>
-<?php  include_once(USER_CLASS.'publicview.php');
-$article=new article;
+<?php  $article=new article;
+$past =$article->  getPublishedPosts();
  include_once(USER_SERVER.'comment_server.php'); ?>
 <?php include_once(USER_SERVER.'user_action_server.php'); ?>
 <?php include_once(USER_INCLUDES.'minimal_header.php'); ?>
-<?php $past =$article->  getPublishedPosts();	
- $katha=new publicview();
- ?>
 <title> </title>
 <!DOCTYPE html>
 <html>
@@ -20,16 +17,13 @@ body {
     background: #e9ebee;
     font-size: 0.9em;
 }
-
 .postwall {		
 	border: 1px  solid #74543e34;
 	border-radius: 5px;			
 }
-
 .post-title {
     color: #4faae6;
 }
-
 .post-link {
     color: #4faae6;
 }
@@ -41,10 +35,6 @@ body {
     display: none;
     text-align: center;
 }
-.ajax-loader img {
-    width: 50px;
-    vertical-align: middle;
-}
 </style>
 </head>
 <body>
@@ -53,10 +43,6 @@ body {
 	<input type="hidden" name="total_count" id="total_count" value="<?php echo $katha-> CountTable('posts'); ?>" />
 	<input type="hidden" name="action_server" id="action_server" value="<?php echo USER_SERVER_URL.'user_action_server.php'; ?>" />
     </div>
-
-
-
-    
 <div class="container-fluid mt-5">
 	<div class="row mx-0">
 		<div class="col-xs-0 col-md-2 mx-0 px-0">			
@@ -99,7 +85,7 @@ body {
 						
 							<h4 class="post-title"><?php echo ucfirst($post['title']); ?></h4>
 							<div class="post-body-div p-0 d-inline-block" style="max-width:90%">                
-								 <?php echo html_entity_decode(html_entity_decode(html_entity_decode(substr($post['body'], 0, 200)))); ?> ... <p class="post-link"><a class="post-title" target="_blank" href="single_post.php?post-slug=<?php echo $post['slug']; ?>">Read more...</a></p>
+								 <?php echo substr($post['body'], 0, 200); ?> ... <p class="post-link"><a class="post-title" target="_blank" href="single_post.php?post-slug=<?php echo $post['slug']; ?>">Read more...</a></p>
 							</div>	
 							<div class="post-info p-3">
 								<i 
@@ -154,14 +140,14 @@ body {
 															<span class="comment-date"><?php echo date("F j, Y ", strtotime($comment["created_at"])); ?></span>
 															<p class="comment_value"><?php echo htmlspecialchars($comment['body']); ?></p>
 															<?php if ($check->is_user() && $check->is_same_user($comment['user_id'])):?>
-																<button class="edit-btn btn btn-sm btn-primary py-0" data-id="<?php echo $comment['id']; ?>">Edit</button>					
+																<button class="edit-btn badge btn-primary py-0" data-id="<?php echo $comment['id']; ?>">Edit</button>					
 															<?php else:?>	
 																<?php if ($check->is_user()):?>											
-																	<button class="reply-btn btn btn-sm btn-primary py-0" data-id="<?php echo $comment['id']; ?>" data-receiver_id="<?php echo $comment['user_id']; ?>">Reply</button>
+																	<button class="reply-btn badge btn-primary py-0" data-id="<?php echo $comment['id']; ?>" data-receiver_id="<?php echo $comment['user_id']; ?>">Reply</button>
 																<?php endif?>
 															<?php endif?>
 															<?php if ($check->is_user() && $check->is_same_user($comment['user_id']) || $check->is_admin()):?>
-																<button class="delete-btn btn btn-sm btn-danger py-0" data-id="<?php echo $comment['id']; ?>"  data-object="comments" >Delete</button>
+																<button class="delete-btn badge btn-danger py-0" data-id="<?php echo $comment['id']; ?>"  data-object="comments" >Delete</button>
 															<?php endif?>
 														</div>
 													</div><!-- // comment-details -->
@@ -214,8 +200,9 @@ body {
 				</div>	<!-- post-wrapper -->
 			</div> <!--content -->
 			<?php endforeach?>
-		</div>   
-			<div class="col-xs-0 col-md-2 mx-0 px-0">						
+		</div> 
+		<?php include_once(USER_INCLUDES.'minimal_footer.php'); ?>
+			<div class=" col-md-2 mx-0 px-0 d-none d-sm-block">						
 						<?php if ($check->is_user()):?>
 							<?php include_once(USER_INCLUDES.'/chatbox.php');?>
 						<?php endif ?>
@@ -275,6 +262,7 @@ function getMoreData(lastId) {
 </script>
 <script type="text/javascript" src="<?php echo JS_URL?>comment_system.js" ></script>
 <script type="text/javascript" src="<?php echo JS_URL?>user_action.js" ></script>
+<?php include_once ( USER_INCLUDES . 'footer.php') ?>
 
 </body>
 </html>
