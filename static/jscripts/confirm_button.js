@@ -51,14 +51,15 @@ $(document).ready(function(){
 		$.confirm
 		({
 			title: $title.charAt(0).toUpperCase() + $title.slice(1),
-			content:'<form action="" id="confirm_form">' +
-					'<div class="form-group">' +
-					'<label>Please enter your '+$title+ ' profile link.</label>' +
-					'<input type="text" value="' +$('#'+$title+'_data').val()+ '" placeholder="Your link here" class="link " required />' +
-					'</div>' +
-					'</form>',  
+			content:'<form action=""  id="confirm_form">' +	
+					'<div class="form-input-group">'+
+					'<label class="">Please enter your '+$title+ ' profile link.</label>' +   
+					'<input type="text"  value="' +$('#'+$title+'_data').val()+ '" placeholder="Your link here" class="link form-control"  >'+
+					' </div>' +
+					'</form>' ,  
 			type: $color,  
-			boxWidth: '35%',    
+			boxWidth: '35%',   
+			backgroundDismiss: false, 
 			icon: 'fab fa-'+$title,    
 			buttons: {
 					Yes: {//also the name of the function

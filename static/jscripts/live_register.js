@@ -24,11 +24,9 @@ $('document').ready(function(){
       {
           thisObj.parsley().reset();
           clear(thisObj);
-          if(send)
-            {
-              window[send+'condition'] = false;         
-            }         
-        } 
+          if(send)            
+              window[send+'condition'] = false;
+      } 
         return value;       
   }
 
@@ -40,7 +38,6 @@ $('document').ready(function(){
   }
 
   function ajaxcall(value,send,$input,object){
-
     $.ajax({
        url:'server/main_server.php',
        method: 'POST',
@@ -61,8 +58,7 @@ $('document').ready(function(){
 
   $('#reg_btn').on('click', function(event){   
     if ( emailcondition==false || usernamecondition==false) {
-	 $('#error_msg').html('We cannot move forward until the all the errors on the form is resolved');
-   $("#error_msg").fadeTo(3500, 800).slideUp(800);
+	 $('#error_msg').html('<div class="bg-danger alert text-white">We cannot move forward until the all the errors on the form is resolved</div>').fadeTo(3500, 800).slideUp(800);
 	 event.preventDefault();
    }else{    
        // proceed with form submission

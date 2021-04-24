@@ -2,7 +2,7 @@ $(document).ready(function() {
         var hash = window.location.hash;
         check(hash);
         function check(hash){
-                var array=['#login','#register','#reset_password','#homepage','#conditions'];
+                var array=['#login','#register','#reset_password','#homepage','#conditions','#main','#about','#contact'];
                 if (hash !=null && hash!='' && jQuery.inArray(hash,array)!= -1){
                         show(hash);
                 }
@@ -30,20 +30,21 @@ $(document).ready(function() {
                 $('.homepage_link').on('click',function(event) {                            
                 show('#homepage',event);           
                 });
-              
-                function show(data,event=null){
-                if(event){ event.preventDefault();}
-                $('.container').hide();
-                $(data+'_container').show();
+                /* Main Navigation Clicks */
+                $('.main-nav ul li a').click(function() {
+                        var link = $(this).attr('href');		
+                        show(link);
+                });         
+
+        function show(data,event=null){
+                if(event){ event.preventDefault();}			
+                $('.container, .content').hide()
+                $(data+'_container').show()
+                $('.main-nav ul li a').removeClass('active'); //remove active
+                $('a[href="'+data+'"]').addClass('active'); // add active	
                 window.location.hash=data;  
         }
         
-             
-        setTimeout(function(){
-                    $('.alert, .error, .message').slideUp();
-                }, 4000);
-
-
                 $('.user_form').on("submit",function(){ 
                         if($(this).parsley().isValid())
                              {

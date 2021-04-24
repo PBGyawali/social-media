@@ -1,8 +1,5 @@
 $(document).ready(function(){
 
-	$('#ticket_form').parsley();
-	var dataTable = $('#list').DataTable({"order" : [],responsive: true } );
-	var url = $('#ticket_form').attr('action');	
 	$('.hiderow').click(function(){
 		clickedbtn=$(this);
 		var id=clickedbtn.attr('id');
@@ -40,7 +37,6 @@ $(document).ready(function(){
 	
 
 	$('#add_ticket').click(function(){
-		
 		$('#ticket_form')[0].reset();
 		$('#ticket_form').parsley().reset();
     	$('#modal_title').text('Add Ticket');
@@ -52,9 +48,7 @@ $(document).ready(function(){
 	var count_comment = 0;
 
 	$(document).on('click', '#add_comment', function(){
-
 		count_comment++;
-
 		var html = `		
 		<div class="row mt-2" id="comment_`+count_comment+`">
 			<label class="col-md-4">&nbsp;</label>
@@ -73,8 +67,6 @@ $(document).ready(function(){
 		var button_id = $(this).data('id');
 		$('#comment_'+button_id).remove();
 	});
-
-	
 
 	$('#ticket_form').on('submit', function(event){
 		event.preventDefault();			
@@ -98,15 +90,10 @@ $(document).ready(function(){
 				$('#ticketModal').modal('hide');                 
 				},
 				success:function(data)
-				{			
-					if(data.error != '')					
-						$('#error_msg').html(data.error).show().fadeTo(2500, 500).slideUp(500);	
-					else
-					{						
-						$('#list').prepend(data.ticket);
-						$('#success_msg').html(data.success).show().fadeTo(2500, 500).slideUp(500);
-					}					
-						
+				{
+					showMessage(data.response);				
+					if(data.status== 'success')									
+						$('#list').prepend(data.data);
 				}            										
 					
 			})
@@ -195,7 +182,6 @@ $(document).on('click', '.view_button', function(){
 $('#comment_form').on('submit', function(event)
 {
 	event.preventDefault();
-	$('#comment_form').parsley();
 	if($('#comment_form').parsley().isValid())
 	{		
 		var ticketid=$('#ticketcommentid').val();		

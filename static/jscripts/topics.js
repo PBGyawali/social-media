@@ -1,7 +1,6 @@
 $(document).ready(function(){
-
-	var dataTable = $('#topic_table').DataTable({});
-	var url = $('#topic_form').attr('action');	
+	
+		
 	$('#add_topic').click(function(){
 		$("#topic_name").val('');
 		$('#topic_form').parsley().reset();
@@ -28,21 +27,18 @@ $(document).ready(function(){
 		var action=$('#action').val();
 		var id=$('#hidden_id').val(); 
 		if($('#topic_form').parsley().isValid())
-		{	callCrudAction(action,id);	}
+			callCrudAction(action,id);	
 	});
 
 	$(document).on('click', '.delete_button', function()
 	{
 		var id = $(this).data('id');		
-		$.confirm
-		({
+		$.confirm({
 			title: 'Delete!',
 			content: 'This will delete the data permanently. Proceed?',    
-			buttons: 
-			{Yes: 
-				{
-					action: function()
-					{	
+			buttons:{
+				Yes:{
+					action: function(){	
 						callCrudAction('delete',id); 
 					}
 				}
@@ -51,21 +47,7 @@ $(document).ready(function(){
 	});
 
 
-  updateIndex = function() {
-         $('td.index').each(function(i) {
-            $(this).html(i + 1);
-         });
-      };
-	  function timeout()
-	  {		
-		  setTimeout(function(){
-			  $('.error, .message, .alert').slideUp(500);
-		  }, 3000);
-		  
-		  setTimeout(function(){
-		  $('#message,#alert_action,#form_message').html('');
-		  }, 5000);
-	  }
+ 
 function callCrudAction(action,id) {	
 	var topic=$("#topic_name").val();	
 	var queryString;
@@ -80,8 +62,7 @@ function callCrudAction(action,id) {
 		case "delete":
 			queryString = 'action='+action+'&topic_id='+ id;
 			break;	
-			        }	 
-
+			        }
 	jQuery.ajax({
 	url: url,
 	data:queryString,
@@ -96,35 +77,28 @@ function callCrudAction(action,id) {
 		$('#submit_button').attr('disabled', false);		
 		var status = data.status;
 		var response = data.response;
-		if (status=="error"){
-			$('#form_message').html('<div class="alert alert-danger">'+response+'</div>');
+		if (status=="danger"){
+			$('#form_message').html(response);
 			timeout();	
 			}
-		else{			
+		else{
+			$('#topicModal').modal('hide');	
 				switch(action) 
 				{
 					case "add":
-						$("#topic_table").append(response);
+						$("#list").append(data.data);
 						updateIndex();
-						$('#success_msg').html(status);							
-						$('#topicModal').modal('hide');	
 					break;
 					case "edit":
-						$("#topic_" + id + " .topic-content").html(response);
-						$('#success_msg').html(status);	
-						$('#topicModal').modal('hide');	
+						$("#topic_" + id + " .topic-content").html(data.data);
 					break;
-					case "delete":
-						$('#success_msg').html(response);					
+					case "delete":	
 						$('#topic_'+id).fadeOut("slow");				
 					break;
-							
 				}
-				$('#topicModal').modal('hide');
-				$('#success_msg').show().fadeTo(2500, 500).slideUp(500);
+				showMessage(response)
 			}
-		
-			
 	},
 	});}
+	
 });

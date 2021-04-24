@@ -75,7 +75,7 @@ $(document).ready(function(){
                                 {	profile(data.profile_image,data.url);                                		
                                   $('.success_msg').html(data.success).show().fadeTo(3500, 800).slideUp(800);                                  
                                   $('#upload_icon_text').text(' Upload New');
-                                  //$('.delete_btn').hide();
+                                  $('.delete_btn').hide();
                                 }
                               }
                           });
@@ -135,11 +135,11 @@ $(document).ready(function(){
     function profile(imagefile,url){
       profile_image=url+imagefile;
       $('#profile_image').val(imagefile);
-      var image='<img src="'+profile_image+'" class="rounded-circle mb-1 mt-0"	';
+      var image='<img src="'+profile_image+'" class="rounded-circle img-fluid mb-1 mt-0"	';
       $('#user_uploaded_image').html('<a data-fancybox="gallery" href="'+profile_image+
-      '"data-caption="Your full picture">'+image+' width="200" height= "200" ></span>');
-      $('#user_uploaded_image_medium').html(image+' width="100" height="100" />');
-      $('#user_uploaded_image_small').html(image+' width="30" height="30" />');
+      '"data-caption="Your full picture">'+image+' width="150"  ></span>');
+      $('#user_uploaded_image_medium').html(image+' width="100"  />');
+      $('#user_uploaded_image_small').html(image+' width="30"  />');
     }
 
     function showAlert($content){
