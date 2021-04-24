@@ -17,16 +17,16 @@ h1{
 	color:#fff;
 	font-weight: normal;
 	letter-spacing: 1px;
-	font-size: 63px; line-height: 70px; padding: 0; margin: 0;
+	font-size: 63px; 
+	line-height: 70px;
+	 padding: 0; margin: 0;
 }
 
 
-a.link {
-	color:yellow;
-	text-decoration:none;
-	font-weight: normal;
-}
-a:hover {text-decoration:underline;}
+p{
+	word-wrap: break-word;
+	word-break: break-word;
+  }
 
 /* Set the background ima */
 #maximage {
@@ -71,38 +71,22 @@ a:hover {text-decoration:underline;}
 	.mc-old-browser .mc-image {
 		overflow:hidden;
 	}
-.show{display: block;}
-.hide{opacity: 0;}
-
 /* Set Page Elements */
 .content { 
 	float:left;
 	margin:40px;
 	position:absolute;
+	width:500px;
 	top:200px;
-	width:600px;
 	z-index:9999;
 	-webkit-font-smoothing:antialiased;
 }
-
-#logo {
-	font-family: 'Coustard', serif;
-	font-size: 49px;
-	bottom:40px;
-	height:auto;
-	left:40px;
-	position:absolute;
-	width:30%;
-	z-index:1000;
-	color: #fff;
+a.link {
+	color:yellow;
+	text-decoration:none;
+	font-weight: normal;
 }
-
-.main-nav{
-	position:absolute;
-	bottom: 23px;
-	left:500px;
-	z-index:101;
-}
+a:hover {text-decoration:underline;}
 .main-nav ul li { 
 	display: inline;
 	padding-right: 10px;
@@ -112,16 +96,8 @@ a:hover {text-decoration:underline;}
 }
 .main-nav ul li a.link.active {color: #ffa800;}
 
-.social-nav {
-	position:absolute;
-	bottom: 35px;
-	right: 200px;
-}
-
-
 section .social-nav {
-	position:absolute;
-	bottom: 35px;
+	position:absolute;	
 	right: 50px;
 }
 .social-nav ul {margin: 0; padding:0;}
@@ -130,7 +106,7 @@ section .social-nav {
 	display:block;
 	float: left;
 	background: #393939;
-	padding:50px 10px 5px 10px;
+	padding:25px 10px 25px 10px;
 	margin: 1px;
 	opacity: .5;
 }
@@ -148,4 +124,37 @@ button.full-screen:hover {opacity: 1;}
 }
 #arrow_left {
 	right:95px;
+}
+@media screen and (max-width: 650px) {  
+	h1{		
+	
+		font-size: 33px !important; 		
+	}
+	h5{	
+		font-size: 1.20em !important; 		
+	}
+	#logo {		
+		font-size: 29px;
+		width:20%;
+	}	
+		#arrow_left, #arrow_right {			
+			width:30px;
+			
+		}.main-nav ul li { 
+			
+			padding-right: 5px;
+			padding-left: 5px;			
+		}
+		/* Set Page Elements */
+		.content { 
+			width:auto;
+		}
+		#arrow_left, #arrow_right {
+			
+			right:15px;
+			
+		}
+		#arrow_left {
+			right:55px;
+		}
 }
