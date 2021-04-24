@@ -1,7 +1,7 @@
 <?php 
 include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');  
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+
+$katha = new publicview();
 $user_id=isset($_SESSION['id']) ? $_SESSION['id']:"";
 $user_name=isset($_SESSION['user_name']) ? $_SESSION['user_name']:"";
 include_once(ADMIN_INCLUDES.'header.php');

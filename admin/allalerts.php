@@ -1,20 +1,15 @@
 <?php 
-include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');  
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 include_once(ADMIN_INCLUDES.'header.php');
 include_once(ADMIN_INCLUDES.'sidebar.php');
-$alerts =$records-> allalerts();
+$alerts=$records->allalerts();
 ?>
-
 <input type="hidden" name="" id="ajaxurl" class="alerts" value="<?= BASE_URL?>event_handler.php">
-
-
 <div class="d-flex flex-column " id="content-wrapper">
 <div id="content">
-    <div class="container-fluid ">
-    <div class="col-12 p-0">
-    <div class="d-flex flex-column" >
+<div class="container-fluid ">
+<div class="col-12 p-0">
+<div class="d-flex flex-column" >
 <h1 class="alert-primary text-center ">Alerts center</h1>
 </div>
 </div> 

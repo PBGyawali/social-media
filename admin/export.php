@@ -1,7 +1,7 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');?>
 <?php
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+
+$katha = new publicview();
 
 $file_name = md5(rand()) . '.csv';
 header("Content-Description: File Transfer");

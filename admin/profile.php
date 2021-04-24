@@ -1,7 +1,7 @@
 <?php  
 include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+
+$katha = new publicview();
 $row = $katha->UsersArray();
 $email=(isset($_SESSION['email']))?$_SESSION['email']:'';
 $sex=$facebook=$twitter=$googleplus=$verified=$firstname=$lastname= '';
@@ -18,24 +18,26 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 	            	<div class="card-header md-3 p-0 no-border">
 	            		<div class="row mb-0">
 	            			<div class="col">
-	            				<h2>Profile</h2>
+	            				<h2 class="text-center">Profile</h2>
 							</div><div class="col-md-12">
 							<div class="card mb-0 text-center">
-							<div class="card-body text-center  offset-0 ml-0 ">
+							<div class="card-body text-center  offset-0 ml-0 p-0">	
 							<span id="user_uploaded_image" class="mt-0 ">							
-							<a data-fancybox="" href="<?php echo USER_IMAGES_URL.rawurlencode($profileimage);?>"data-caption="Your full picture"><img class="rounded-circle mb-0 mt-0" src="<?php echo USER_IMAGES_URL.rawurlencode($profileimage);?>" width="200" height= "200" ></span></a>
+							<a data-fancybox="" href="<?php echo USER_IMAGES_URL.rawurlencode($profileimage);?>"data-caption="Your full picture"><img class="rounded-circle mb-0 mt-0 img-fluid" src="<?php echo USER_IMAGES_URL.rawurlencode($profileimage);?>" width="150"  ></span></a>
+							
 							<?php if (!empty($row)):?>
 							<div class="mb-2 d-inline"> 
 							<?php 	
-							echo '<i class="fa btn btn-sm '.($verified?'btn-success fa-check-circle"> Verified':'btn-danger fa-times-circle"> 
-							Not verified').'</i>';	
+							echo '<i class="fa btn btn-sm '.($verified?'btn-success fa-check-circle"> <span class="d-none d-md-inline-block"> Verified</span>':'btn-danger fa-times-circle"> 
+							<span class="d-none d-md-inline-block">Not verified</span>').'</i>';	
 							 ?>
-							</div>							
-							<div class="mb-2 d-inline"><label for="file_upload" tabindex="1"><i class="fa fa-camera upload-button btn btn-primary btn-sm fa fa-camera upload_picture"><span id="upload_icon_text"> <?php if (!empty($profileimage)) echo"Change"; else echo "Upload New"; ?>   </span> </i></label></div>
+							</div>
+							<div class="col-md-12 text-center">						
+							<div class="mb-2 d-inline"><label for="file_upload" tabindex="1"><i class="fa fa-camera upload-button btn btn-primary btn-sm fa fa-camera upload_picture"><span id="upload_icon_text" class="d-none d-md-inline-block"> <?php if (!empty($profileimage)) echo"Change"; else echo "Upload New"; ?>   </span> </i></label></div>
 							<?php endif?>
 							<div class="mb-0 d-inline" id="delete_div">	
 							<?php if (!empty($profileimage)):?>			
-								<button class="btn btn-danger btn-sm fa fa-trash delete_btn" id="delete_picture" title="Click on the button to delete your profile picture"> Delete</button>								  
+								<button class="btn btn-danger btn-sm fa fa-trash delete_btn" id="delete_picture" title="Click on the button to delete your profile picture"> <span class="d-none d-md-inline-block">Delete</span></button>								  
 								  <?php endif ?>
 								</div>					  
  							<form id="picture_upload" action="<?php echo USER_SERVER_URL?>profile_picture_server.php" method="post" enctype="multipart/form-data" style="display:none;">							
@@ -44,15 +46,15 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 								<input type="file" name="featured_image" id="file_upload" class="mb-2 d-block file_upload" data-allowed_file='[<?php echo '"'.implode('","', ALLOWED_IMAGES) .'"';?>]' data-upload_time="now" accept="<?php echo "image/".implode(", image/", ALLOWED_IMAGES);?>"  >
 								<input type="submit" name="upload" value="upload">							
 							</form>
-                            </div></div></div></div>
+                            </div></div></div></div></div>
 							<div class="row mb-0">
 							<div class="col-sm-12 p-0 ">
                                 <div class="col ">
 							<div class="card mb-0 ">
-							<div class="card-body text-center ">
-							<button class="btn  m-0 p-0 btn-sm fab fa-facebook fa-6x  d-inline" id="facebook" type="button"> </button>
-							<button class="btn  p-0 pr-1 pl-1 btn-sm fab fa-twitter fa-5x d-inline" id="twitter"type="button"> </button>
-							<button class="btn  p-0 pr-1 pl-1 btn-sm fab fa-google-plus fa-5x d-inline" id="google-plus" type="button"> </button>								
+							<div class="card-body text-center p-0">
+							<button class="btn  m-0 px-1 btn-sm fab fa-facebook fa-4x  d-inline" id="facebook" type="button"> </button>
+							<button class="btn  px-1  btn-sm fab fa-twitter fa-3x d-inline" id="twitter"type="button"> </button>
+							<button class="btn  px-1  btn-sm fab fa-google-plus fa-3x d-inline" id="google-plus" type="button"> </button>								
 							</div>
 							</div></div></div></div>
 							<div class="row mb-0">
@@ -60,7 +62,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 	            			</div>
 	            		</div>
 	            	</div>
-	            	<div class="card-body">
+	            	<div class="card-body p-0">
 	            		<div class="col-md-4">&nbsp;</div>
 	            		<div class="col-md-9">
 	            			<form method="post" id="user_form" enctype="multipart/form-data" action="<?php echo USER_SERVER_URL;?>main_server.php">
@@ -109,7 +111,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 										</div>
 										</div>
 					          	</div>	
-					          	<div class="form-group text-center">
+					          	<div class="form-group text-center mb-0">
 								  <input type="hidden" name="facebook_data" class="social_media_data" data-id="facebook" id="facebook_data"value="<?php echo $facebook?>">
 									<input type="hidden"  name="twitter_data" class="social_media_data" data-id="twitter" id="twitter_data"value="<?php echo $twitter?>">
 									<input type="hidden" name="googleplus_data" class="social_media_data" data-id="google-plus" id="google-plus_data"value="<?php echo $googleplus?>">

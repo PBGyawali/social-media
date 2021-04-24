@@ -1,23 +1,17 @@
 <?php include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 include_once(ADMIN_SERVER.'ticketing_server.php'); 
-include_once(ADMIN_CLASS.'katha.php');
+$katha = new publicview();
+//if(!$katha->is_login())
+//$katha->redirect(BASE_URL);
 
-$katha = new katha();
-
-if(!$check->is_login())
-	$method->redirect(BASE_URL);
-
-if(!$check->is_admin())
-	$method->redirect(BASE_URL);
+//if(!$katha->is_admin())
+//$katha->redirect(BASE_URL);
 $tickets=GetAllTickets();
  include_once(ADMIN_INCLUDES.'header.php');
-
 include_once(ADMIN_INCLUDES.'sidebar.php');
 ?>
 	        
-			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        	<span class="alert alert-danger error_msg" role="alert" id="message"></span>
+			<span class="text-center position-absolute w-100"id="message" style="z-index:50"></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -110,7 +104,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 
 <div id="ticketModal" class="modal fade">
   	<div class="modal-dialog">
-    	<form method="post" id="ticket_form" action="<?= ADMIN_SERVER_URL?>ticketing_server.php">
+    	<form method="post" class="form" id="ticket_form" action="<?= ADMIN_SERVER_URL?>ticketing_server.php">
       		<div class="modal-content">
         		<div class="modal-header">
 					  <h4 class="modal-title" id="modal_title">Create Ticket</h4>
@@ -163,7 +157,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 
 <div id="viewticketModal" class="modal fade">
   	<div class="modal-dialog"> 
-	  <form method="post" id="comment_form" >	   	
+	  <form method="post" class="form" id="comment_form" >	   	
       		<div class="modal-content">
         		<div class="modal-header ">
 					  <h4 class="modal-title text-center " id="viewmodal_title"><span id="titleview"></span> <span id="statusview"class=" text-danger ">()</span></h4>
@@ -230,6 +224,5 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
     	</form>
   	</div>
 </div>
-
-
+<?php include_once(INCLUDES.'admin_footer.php')?>
 <script src="<?= JS_URL?>tickets.js"></script>

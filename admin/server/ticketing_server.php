@@ -1,9 +1,6 @@
 
-<?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-  include_once(ADMIN_CLASS.'katha.php');
-$katha=new katha();
-
-
+<?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');  
+$katha=new publicview();
 $error="";
 if (isset($_POST['fetch_detail'])) {
     $id=$katha->clean_input($_POST['id']);    
@@ -49,16 +46,14 @@ if (isset($_POST['status']) && in_array($_POST['status'], array('open', 'closed'
     echo json_encode($status);
 }
 
-  
-// Output message variable
-$errors = '';
 // Check if POST data exists (user submitted the form)
 if (isset($_POST['title'], $_POST['email'], $_POST['msg'])) {
     // Validation checks... make sure the POST data is not empty
+    $status='danger';
     if (empty($_POST['title']) || empty($_POST['email']) || empty($_POST['msg'])) {
-        $errors = 'Please complete the form!';
+        $response= 'Please complete the form!';
     } else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors = 'Please provide a valid email address!';
+        $response = 'Please provide a valid email address!';
     } else {
         $email=$katha->clean_input($_POST['email']);
         $title=$katha->clean_input($_POST['title'],'h');
@@ -68,7 +63,8 @@ if (isset($_POST['title'], $_POST['email'], $_POST['msg'])) {
         $newid=$katha->id();
         if($newid){
 
-            $_SESSION['message']="A new ticket has been successfully created";      
+            $response="A new ticket has been successfully created"; 
+            $status='success';
             $ticket=" <tr id='ticket_".$newid."'>".            
             "<td class='ticketstatus'>            
             <i class='far fa-envelope fa-2x text-primary open' title='OPEN'><span style='display: none;'>Abcde</span></i>
@@ -89,13 +85,14 @@ if (isset($_POST['title'], $_POST['email'], $_POST['msg'])) {
 
         }
         else{
-            $errors = 'The ticket could not be created at the moment';
+            $response = 'The ticket could not be created at the moment';
         }
         
     }
+    
+    $response='<div class="alert alert-'.$status.'">'.$response.'</div>';
+    $katha->response($response,$status,$ticket);
 
-    $finalresponse = array(   'ticket'=>$ticket ,'success' => $_SESSION['message'], 'error' => $errors );
-      echo json_encode($finalresponse);
 }
 // Check if the comment form has been submitted
 if (isset($_POST['usermsg']) ) {

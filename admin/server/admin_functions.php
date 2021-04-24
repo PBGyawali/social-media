@@ -1,8 +1,10 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(ADMIN_CLASS.'katha.php');
-$katha=new katha();
+
+$katha=new publicview();
 $topic_id = 0;
-$topic_name = "";
+$topic_name =$data='';
+$status='success';
+
 
 if(isset($_POST["action"]))	 	$action = $katha->clean_input($_POST["action"]);	
 if(isset($_POST["topic_id"]))	$topic_id=$katha->clean_input($_POST['topic_id']);
@@ -15,8 +17,8 @@ if(!empty($action))
 		case "add":
 		case "edit":
 			if (empty($topic)){ 
-				$response= "Topic name required"; 
-				$status="error";
+				$message= "Topic name required"; 
+				$status="danger";
 			}
 			else 
 			{	
@@ -26,8 +28,8 @@ if(!empty($action))
 						// Ensure that no topic is saved twice. 
 					$topic_check_query =$katha->CountTable('topics','slug',$slug);			
 					if ($topic_check_query>0){ 
-						$response= "Topic already exists";
-						$status="error";
+						$message= "Topic already exists";
+						$status="danger";
 					} 
 					else
 					{					
@@ -36,8 +38,8 @@ if(!empty($action))
 						{
 							$insert_id = $katha->id();
 							if ($insert_id ){
-								$status="The topic was successfully added";
-								$response= '
+								$message="The topic was successfully added";
+								$data= '
 								<tr  class="topic-box" id="topic_'. $insert_id.'">
 										<td class="index">1</td>
 										<td><div class="topic-content">'.ucwords($topic).'</div></td>
@@ -48,8 +50,8 @@ if(!empty($action))
 										</tr>';
 							}
 							else{								
-									$response= "Topic is not unique";
-									$status="error";
+									$message= "Topic is not unique";
+									$status="danger";
 							}							
 						}
 					}
@@ -57,44 +59,43 @@ if(!empty($action))
 
 						case "edit":							
 								$topic_check_query=$katha->CountTable('topics',array('slug','id!'),array($slug,$topic_id));						
-								if ($topic_check_query[0]>0) { 
-									$response= "Topic already exists";
-									$status="error";
+								if ($topic_check_query>0) { 
+									$message= "Topic already exists";
+									$status="danger";
 								} 
 								else{
 									$result =$katha->UpdateDataColumn('topics',array('name','slug'),array($topic,$slug),"id",$topic_id);
+									$data=$topic;
 									if($result){ 
 										if ($katha->row()){
-											$status="The topic was successfully updated";
-											$response=$topic;
+											$message="The topic was successfully updated";
 										}
 										else{
-											$status="There was no update made";
-											$response=$topic;
+											$status="warning";
+											$message="There was no change made";
 										}										
 									}
 									else{
-										$status="error";
-										$response="There was no update made";
+										$status="danger";
+										$message="There update could not be executed";
 									}
 								}																						
 						break;
 				}			
-			break;	}	
-		
-
+				}
+			break;	
 		case "delete": 
 			$result=$katha->Delete('topics','id',$topic_id);
 			if($result){
-				$status="success";
-				$response="The topic was successfully deleted";
+				$message="The topic was successfully deleted";
 			}
 			else{
-				$status="error";
-				$response="The topic could not be deleted due to some error";
+				$status="danger";
+				$message="The topic could not be deleted due to some error";
 			}			
 			break;
 	}
-	$method->response($response, $status);	
+	$message='<div class="alert alert-'.$status.'">'.$message.'</div>';
+	$method->response($message, $status,$data);	
  }
 ?>

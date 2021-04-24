@@ -1,27 +1,9 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 include_once(ADMIN_SERVER.'useraction_server.php'); 
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
-
 include_once(ADMIN_INCLUDES.'header.php');
 include_once(ADMIN_INCLUDES.'sidebar.php');
  $results =$katha->getAllArray('users','','','','','user_type'); ?>
-<script>
-$(document).ready(function(){
-    var date = new Date();
-        
-    $('.input-daterange').datepicker({
-        todayBtn: "linked",
-        format: "yyyy-mm-dd",
-        autoclose: true
-    });
-        
-});
-</script>
-			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        
-	        	<span id="message"></span>
+	        	<span class="text-center position-absolute w-100"id="message" style="z-index:50"></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -29,12 +11,12 @@ $(document).ready(function(){
 	            				<h2>User Area</h2>
 	            			</div>
 	            			<div class="col-sm-4">
-	            				<div class="row input-daterange">
+	            				<div class="row ">
 	            					<div class="col-md-6">
-		            					<input type="text" name="from_date" id="from_date" class="form-control form-control-sm" placeholder="From Date" readonly />
+		            					<input type="date" name="from_date" id="from_date" class="form-control form-control-sm" placeholder="From Date"  />
 		            				</div>
 		            				<div class="col-md-6">
-		            					<input type="text" name="to_date" id="to_date" class="form-control form-control-sm" placeholder="To Date" readonly />
+		            					<input type="date" name="to_date" id="to_date" class="form-control form-control-sm" placeholder="To Date"  />
 		            				</div>
 		            			</div>
 		            		</div>
@@ -85,42 +67,30 @@ $(document).ready(function(){
 										</tr>
 								</thead>
 									<tbody>
-	<?php
-	$count = 1; 
-	foreach ($results as $row):?>
+	<?php foreach ($results as $key=>$row):?>
 		<tr id="userlist_<?php echo $row['id']; ?>">
-		<td class="s_no"><?php echo $count; ?></td>
+		<td class="s_no"><?php echo $key+1; ?></td>
 		<td class="id"><?php echo $row['id']; ?></td>
-
 		<td class="profile_image"><?php $image=$katha->Get_profile_image($row['id']); echo '<img data-src="'.$image.'" src="'.USER_IMAGES_URL.rawurlencode($image).'" class="img-fluid img-thumbnail" width="100" height="100" />'; ?></td>
-			<td class="username"><?php echo $row['username']; ?></td>
-            <td class="email"><?php echo $row['email']; ?></td>
-			<td class="full_name"><?php echo ucwords(implode(' ',(array("<span class='first_name'>".$row['first_name']."</span>","<span class='last_name'>".$row['last_name']."</span>")))); ?></td>
-			<td class="user_type"><?php echo $row['user_type']; ?></td>
-			<td class="status"><?php $status= GetUserStatusById($row['id']);echo $status;?></td>
-			
-			<td class="action"><?php echo'
-			<div align="center">
-			<button type="button" name="view_button" class="btn btn-info btn-sm view_button" data-id="'.$row["id"].'"><i class="fas fa-eye"></i></button>
-			&nbsp;
-			<button type="button" name="delete_button" class="btn btn-danger btn-sm delete_button" data-id="'.$row["id"].'"><i class="fas fa-times"></i></button>
-			&nbsp;
-			
-			<button type="button" name="edit_button" class="btn btn-secondary btn-sm edit_button" data-id="'.$row["id"].'"><i class="fas fa-edit"></i></button>
-			
-			&nbsp;
-			<button type="button" name="reset_button" class="btn btn-primary btn-sm reset_button" data-id="'.$row["id"].'"><i class="fas fa-sync"></i></button>
-			&nbsp;
-			<button type="button" name="disable_button" class="btn btn-sm disable_button '. (($status=='Disabled')?'btn-success fas fa-unlock-alt':'btn-warning fas fa-ban') .'" data-id="'.$row["id"].'"></button>
-			</div>'   
-			;	?>		
-</td>
-				                           
+		<td class="username"><?php echo $row['username']; ?></td>
+		<td class="email"><?php echo $row['email']; ?></td>
+		<td class="full_name"><?php echo ucwords(implode(' ',(array("<span class='first_name'>".$row['first_name']."</span>","<span class='last_name'>".$row['last_name']."</span>")))); ?></td>
+		<td class="user_type"><?php echo $row['user_type']; ?></td>
+		<td class="status"><?php echo GetUserStatusById($row['id']);?></td>
+		<td class="action"><?php echo'
+		<div align="center">
+		<button type="button" name="view_button" class="btn btn-info btn-sm view_button" data-id="'.$row["id"].'"><i class="fas fa-eye"></i></button>
+		<button type="button" name="delete_button" class="btn btn-danger btn-sm delete_button" data-id="'.$row["id"].'"><i class="fas fa-times"></i></button>
+		<button type="button" name="edit_button" class="btn btn-secondary btn-sm edit_button" data-id="'.$row["id"].'"><i class="fas fa-edit"></i></button>
+		<button type="button" name="reset_button" class="btn btn-primary btn-sm reset_button" data-id="'.$row["id"].'"><i class="fas fa-sync"></i></button>
+		<button type="button" name="verify_button" class="btn btn-success btn-sm verify_button" data-id="'.$row["id"].'"><i class="fas fa-check"></i></button>
+		<button type="button" name="disable_button" class="btn btn-sm disable_button '. (($status=='Disabled')?'btn-success fas fa-unlock-alt':'btn-warning fas fa-ban') .'" data-id="'.$row["id"].'"></button>
+		</div>'   
+		;	?>		
+		</td>			                           
 		</tr>
-		<?php	$count++;endforeach?>
-	
+		<?php	endforeach?>	
 	</tbody>
-			
             			</table>
 	            		</div>
 	            	</div>
@@ -128,13 +98,45 @@ $(document).ready(function(){
 	        </div>
 	    </div>
 	</div>
-
 </body>
 </html>
 
+<div id="verifyModal" class="modal fade">
+  	<div class="modal-dialog">
+    	<form method="post" id="verify_form" class="form"  enctype="multipart/form-data">
+      		<div class="modal-content">
+        		<div class="modal-header">
+          			<h4 class="modal-title" id="modal_title">User Status</h4>
+          			<button type="button" class="close" data-dismiss="modal">&times;</button>
+        		</div>
+        		<div class="modal-body">
+		          	<div class="form-group">
+		          		<div class="row">
+			            	<label class="col-md-4 text-right">Verify Badge</label>
+			            	<div class="col-md-8">
+			            		<select name="verify_type" id="verify_type" class="form-control" required>
+			            			<option value="" disabled  selected hidden>Select Verify type</option>
+									<option value="yes" >Verify User</option>
+									<option value="no" >Remove Verify</option>
+			            		</select>
+			            	</div>
+			            </div>
+		          	</div>
+        		</div>
+        		<div class="modal-footer">
+          			<input type="hidden" name="id" id="hidden_verify_id" />
+          			<input type="hidden" name="verify" id="verify_action" value="verify" />
+          			<input type="submit" name="submit" id="verify_button" class="btn btn-success" value="Approve" />
+          			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        		</div>
+      		</div>
+    	</form>
+  	</div>
+</div>
+
 <div id="userModal" class="modal fade">
   	<div class="modal-dialog">
-    	<form method="post" id="user_form" action="<?php echo ADMIN_SERVER_URL.'useraction_server.php';?>" enctype="multipart/form-data">
+    	<form method="post" id="user_form" class="form" action="<?php echo ADMIN_SERVER_URL.'useraction_server.php';?>" enctype="multipart/form-data">
       		<div class="modal-content">
         		<div class="modal-header">
           			<h4 class="modal-title" id="modal_title">Add User</h4>
@@ -186,7 +188,8 @@ $(document).ready(function(){
 			            	<label class="col-md-4 text-right">User_type</label>
 			            	<div class="col-md-8">
 			            		<select name="user_type" id="user_type" class="form-control" >
-			            			<option value="" disabled  selected hidden>Select User type</option>
+									<option value="" disabled  selected hidden>Select User type</option>
+									<option value="owner" >Owner</option>
 									<option value="admin" >Admin</option>
 									<option value="editor" >Editor</option>
 									<option value="user" >User</option>
@@ -194,9 +197,6 @@ $(document).ready(function(){
 			            	</div>
 			            </div>
 		          	</div>
-		          	
-				  
-					  
         		</div>
         		<div class="modal-footer">
           			<input type="hidden" name="id" id="hidden_id" />
@@ -211,7 +211,7 @@ $(document).ready(function(){
 
 <div id="detailModal" class="modal fade">
   	<div class="modal-dialog modal-lg">
-    	<form method="post" id="details_form" enctype="multipart/form-data">
+    	<form method="post" id="details_form" class="form" enctype="multipart/form-data">
       		<div class="modal-content">
         		<div class="modal-header">
           			<h4 class="modal-title" id="detail_modal_title"> User Details</h4>
@@ -222,7 +222,7 @@ $(document).ready(function(){
 		          		<div class="row">
 			            	<label class="col-md-4 text-right"></label>
 			            	<div class="col-md-8" >
-			            		<img id="profile_image" src="<?php echo USER_IMAGES_URL.rawurlencode($katha->Get_profile_image());?>" class="rounded-circle mb-0 mt-0" width="200" height="200" alt="thumbnail">
+			            		<img id="profile_image" src="<?php echo USER_IMAGES_URL.rawurlencode($katha->Get_profile_image());?>" class="rounded-circle mb-0 mt-0 img-fluid" width="200" alt="thumbnail">
 			            	</div>
 			            </div>
 		          	</div>
@@ -242,7 +242,6 @@ $(document).ready(function(){
 			            	</div>
 			            </div>
 		          	</div>
-		          	
 		          	<div class="form-group">
 		          		<div class="row">
 			            	<label class="col-md-4 text-right"><b>Full name:</b></label>
@@ -300,9 +299,6 @@ $(document).ready(function(){
 			            	</div>
 			            </div>
 					  </div>
-					  
-		          
-					 
         		</div>
         		<div class="modal-footer">
           			<input type="hidden" name="id" id="detail_hidden_id" />
@@ -316,15 +312,13 @@ $(document).ready(function(){
 </div>
 <div id="actionModal" class="modal fade">
   	<div class="modal-dialog modal-lg">
-    	<form method="post" id="action_form" enctype="multipart/form-data">
+    	<form method="post" id="action_form" class="form" enctype="multipart/form-data">
       		<div class="modal-content">
         		<div class="modal-header">
           			<h4 class="modal-title" id="action_modal_title"> Disable User</h4>
           			<button type="button" class="close" data-dismiss="modal">&times;</button>
         		</div>
-        		<div class="modal-body">		
-		          	
-		          	
+        		<div class="modal-body">	
 					  <div class="form-group" id="remarks_div">
 		          		<div class="row">
 			            	<label class="col-md-4 text-right"><b>Remarks:</b></label>
@@ -332,13 +326,11 @@ $(document).ready(function(){
 			            		<textarea name="remarks" id="action_remarks" class="form-control" data-parsley-maxlength="400" data-parsley-trigger="keyup"></textarea>
 			            	</div>
 			            </div>
-					  </div>       
-					 
+					  </div>  
         		</div>
         		<div class="modal-footer">
           			<input type="hidden" name="id" id="action_hidden_id" />
 					  <input type="hidden" name="action" id="action_update_detail" value="update_detail" />
-					  <input type="hidden" id="actionModalurl" value="<?php echo ADMIN_SERVER_URL.'useraction_server.php';?>" />
           			<input type="submit" name="submit" id="action_submit_button" class="btn btn-success" value="Disable" />
           			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         		</div>
@@ -346,6 +338,7 @@ $(document).ready(function(){
     	</form>
   	</div>
 </div>
+<?php include_once(INCLUDES.'admin_footer.php')?>
 <script src="userlist.js"></script>
 
 

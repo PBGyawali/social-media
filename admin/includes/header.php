@@ -7,8 +7,7 @@
 		<script type="text/javascript" src="<?php echo JS_URL?>datatables.min.js"></script>	
 		<link rel="shortcut icon" type="image/x-icon" href="<?= LOGO_URL?>logo2_4_02_01_21_7052.png " />
 		<script type="text/javascript" src="<?php echo JS_URL?>parsley.min.js"></script>
-    <script type="text/javascript" src="<?php echo JS_URL?>bootstrap.bundle.min.js"></script>
-	  <script type="text/javascript" src="<?php echo JS_URL?>bootstrap-datepicker1.js"></script>
+    <script type="text/javascript" src="<?php echo JS_URL?>bootstrap.bundle.min.js"></script>	  
 		<script type="text/javascript" src="<?php echo JS_URL?>jquery-confirm.min.js"></script>  
     <!-- blockui-->
     <script type="text/javascript" src="<?php echo JS_URL?>jquery.blockUI.js"></script>
@@ -18,11 +17,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="<?php echo CSS_URL?>datatables.min.css" >
     <link rel="stylesheet" href="<?php echo CSS_URL?>parsley.css" >		
-    <link rel="stylesheet" href="<?php echo CSS_URL?>jquery-confirm.min.css">
-    <link rel="stylesheet" href="<?php echo CSS_URL?>datepicker.css" >
+    <link rel="stylesheet" href="<?php echo CSS_URL?>jquery-confirm.min.css">    
     <link rel="stylesheet" href="<?php echo CSS_URL?>bootstrap_style.css" >
     <link rel="stylesheet" href="<?php echo CSS_URL?>animate.css"> 
-    <title><?=$page=='index'?'Dashboard':$page;?></title>
+    <title><?=$page=='index'?'Dashboard':ucwords($page);?></title>
 <script type="text/javascript">
 var scrollV, scrollH, loc = window.location;
   if ("pushState" in history)

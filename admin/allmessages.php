@@ -1,21 +1,15 @@
 <?php 
-include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');  
-
-
+include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php'); 
 include_once(ADMIN_INCLUDES.'header.php');
 include_once(ADMIN_INCLUDES.'sidebar.php');
-$user_id=isset($_SESSION['id']) ? $_SESSION['id']:"";
-$user_name=isset($_SESSION['user_name']) ? $_SESSION['user_name']:"";
 $messages = $records->allOfflineMessages();
- include_once(USER_INCLUDES.'/chatbox.php');?>
-
+ ?>
 <div class="d-flex flex-column " id="content-wrapper">
 <div id="content">    
 <div class="container-fluid ">   
- <div class="col-lg-12 col-xl-12 col-sm-6 p-0">    
+<div class="col-12 p-0">    
 <div class="d-flex flex-column" >    
 <h1 class="alert-primary text-center ">Your All Messages</h1></div></div> 
-
 <?php if (isset($messages) &&!empty($messages)): ?>
 <?php foreach ($messages as $key => $message): ?>
     <div class="dropdown ">

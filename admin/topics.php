@@ -1,15 +1,12 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-$katha = new katha();
-if(!$check->is_login()){header("location:".$katha->base_url."");}
-if(!$check->is_admin()){header("location:".$katha->base_url."home.php");}
+$katha = new publicview();
+//if(!$katha->is_login()){header("location:".$katha->base_url."");}
+//if(!$katha->is_admin()){header("location:".$katha->base_url."home.php");}
  $topics = $katha->getAllArray('topics');
 include_once(ADMIN_INCLUDES.'header.php');
 include_once(ADMIN_INCLUDES.'sidebar.php');
-?>	
-	        
-			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        	<span id="message"></span>
+?>			
+			<span class="text-center position-absolute w-100"id="message" style="z-index:50"></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -26,7 +23,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 			<?php else: ?>
 	            	<div class="card-body" id="topic-list-box">
 	            		<div class="table-responsive">
-	            			<table class="table table-striped table-bordered" id="topic_table">
+	            			<table class="table table-striped table-bordered" id="list">
 	            				<thead>
 	            					<tr>
 	            						<th>S.No</th>
@@ -42,9 +39,9 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 							<td><div class="topic-content"><?php echo ucwords($topic['name']); ?></div></td>
 							<td>
 
-							<button type="button" name="edit" title="edit"class="fa fa-edit btn btn-success edit_button"  data-id="<?php echo $topic['id'] ?>"> EDIT</button>
+							<button type="button" name="edit" title="edit"class="fa fa-edit btn btn-success edit_button"  data-id="<?php echo $topic['id'] ?>"> <span class="d-none d-sm-inline-block">EDIT</span> </button>
 															&nbsp;
-							<button type="button" name="delete" title="delete" class="fa fa-trash btn btn-danger delete_button" data-id="<?php echo $topic['id'] ?>" > DELETE</button>
+							<button type="button" name="delete" title="delete" class="fa fa-trash btn btn-danger delete_button" data-id="<?php echo $topic['id'] ?>" > <span class="d-none d-sm-inline-block"> DELETE</span></button>
 							</td>
 
 							</tr>
@@ -64,7 +61,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 
 <div id="topicModal" class="modal fade">
   	<div class="modal-dialog">
-    	<form method="post" id="topic_form" action="<?= ADMIN_SERVER_URL?>admin_functions.php">
+    	<form method="post"  class="form" id="topic_form" action="<?= ADMIN_SERVER_URL?>admin_functions.php">
       		<div class="modal-content">
         		<div class="modal-header">
           			<h4 class="modal-title" id="modal_title">Add Topic</h4>
@@ -83,7 +80,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
 		          	
         		<div class="modal-footer">
           			<input type="hidden" name="hidden_id" id="hidden_id" />
-          			<input type="hidden" name="action" id="action" value="Add" />
+          			<input type="hidden" name="action" id="action" value="add" />
           			<input type="submit" name="create_topic" id="submit_button" class="btn btn-success" value="Add" />
           			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         		</div>
@@ -91,5 +88,5 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
     	</form>
   	</div>
 </div>
-
+<?php include_once(INCLUDES.'admin_footer.php')?>
 <script src="<?php echo JS_URL?>topics.js"></script>

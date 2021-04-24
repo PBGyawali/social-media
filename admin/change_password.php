@@ -1,7 +1,7 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');?>
 <?php
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+
+$katha = new publicview();
 if($check->is_login()){
 	$user_id=$_SESSION['id'];
 	$timestamp = $katha->get_data('last_password_change','userlogs','user_id',$_SESSION['id']);

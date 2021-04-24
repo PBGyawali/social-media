@@ -1,10 +1,9 @@
 <?php  
-include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php'); 
 $records=new records;
 $messages =$records-> allunseenOfflineMessages();
 $alerts =$records-> allunreadalerts();
-$website_name=$_SESSION['website_name'];
-$user_type= (isset($_SESSION['user_type']))?$_SESSION['user_type']:'';
+$website_name=(isset($_SESSION['website_name']))?$_SESSION['website_name']:SITE_NAME;
+$user_type= (isset($_SESSION['user_type']))?$_SESSION['user_type']:'Admin';
 $username=(isset($_SESSION['username']))? ucwords($_SESSION['username']):'';
 $user_id=(isset($_SESSION['id']))? ucwords($_SESSION['id']):'';
 $profileimage=(isset($_SESSION['profile_image']))? $_SESSION['profile_image']:'';
@@ -13,23 +12,24 @@ $non_visitable_places=$manage_article='inactive_class';
 ${$page_name."_active"} = 'active_class';
 if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' ;
 ?>
-<div class="container-fluid fixed-top bg-dark py-3" style="z-index:1049;">
+<div class="container-fluid fixed-top bg-dark" style="z-index:1049;">
 	    <div class="row">	       
-	        <div class="col-7">
+	        <div class="col-12 col-sm-6 col-md-7 sidebar-brand d-flex align-items-start ">
 	            <!-- toggler -->
 	            <a data-toggle="collapse" href="" data-target=".collapse" role="button">
-					<h3 class="mt-2 mb-2 text-white text-center"><?php echo $website_name?> <?php echo ucwords($user_type);?> Panel</h3>
+					<h3 class="my-0 text-white text-center navbar-brand"><?php echo $website_name?> <?php echo ucwords($user_type);?> Panel</h3>
 	            </a>
-			</div><div class="col-5  text-center">
-			<div class="d-flex flex-column" >
-                <nav class="navbar navbar-light navbar-expand topbar static-top">                             
-                        <ul class="nav navbar-nav flex-nowrap ml-auto">
+			</div><div class="col-12 col-sm-6  col-md-5 text-center">
+			<div class="d-flex flex-column   justify-content-center" >
+                <nav class="navbar navbar-light navbar-expand topbar static-top py-0">                             
+                        <ul class="nav navbar-nav  ml-auto">
                             <li class="dropdown mx-1" role="presentation">
 								<div class=" dropdown "><a class="dropdown" data-toggle="dropdown" aria-expanded="false" style="cursor:pointer">
-								<span class="badge badge-danger badge-counter" id="alertcount">
-									<?php $alertcount=$records->AlertCount();echo (($alertcount>0)?$alertcount:"").(($alertcount>=4)?"+":"") ;?></span>
+								<?php $alertcount=$records->AlertCount();?>
+								<span class="badge <?php echo (($alertcount>0)?'badge-danger':"") ;?> badge-counter" id="alertcount">
+									<?php echo (($alertcount>0)?$alertcount:"").(($alertcount>=4)?"+":"") ;?></span>
 									<i class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in"
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated grow-in"
                                         role="menu">
 										<h6 class="dropdown-header alert-primary text-center">alerts center</h6>
 										<?php if (isset($alerts) &&!empty($alerts)): ?>
@@ -93,7 +93,7 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 			<div class="dropdown">
 				<div class="dropdown-list  ">
 					<a class="d-flex align-items-center dropdown-item" style="cursor:pointer">
-						<div class="dropdown-list-image mr-3"><img class="rounded-circle" src="<?php echo USER_IMAGES_URL.rawurlencode($message['profile_image']); ?>"height="60" width="60">
+						<div class="dropdown-list-image mr-3"><img class="rounded-circle " src="<?php echo USER_IMAGES_URL.rawurlencode($records->image_check($message['profile_image'],USER_IMAGES_DIR )); ?>"height="60" width="60">
 						<div class="badge status-indicator bg-transparent spinner-grow spinner-grow-sm spinner-border-sm d-inline mt-5 text-left position-absolute" role="status" style="z-index:5;margin-left:-17px;"> 
         					<i class="fa fa-circle text-success" aria-hidden="true"></i></div>
 						</div>
@@ -127,7 +127,7 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 								<div class="shadow dropdown-list dropdown-menu  dropdown-menu-right " aria-labelledby="alertsDropdown"></div>
                             </li>                    
                             <li class="dropdown" role="presentation">							
-							<a data-toggle="dropdown" aria-expanded="false"  style="cursor:pointer" class="no-border p-0 m-0 bg-transparent"><span id="current_user" class="text-white"><?php echo $username?></span> <span id="user_uploaded_image_small" class="mt-0"><img src="<?php echo USER_IMAGES_URL.rawurlencode($profileimage); ?>" class="img-fluid rounded-circle" width="30" height="30"/></a></span>
+							<a data-toggle="dropdown" aria-expanded="false"  style="cursor:pointer" class="no-border p-0 m-0 bg-transparent"><span id="current_user"  class="d-none d-md-inline-block text-white"><?php echo $username?></span> <span id="user_uploaded_image_small" class="mt-0"><img src="<?php echo USER_IMAGES_URL.rawurlencode($records->image_check($profileimage,USER_IMAGES_DIR )); ?>" class="img-fluid rounded-circle" width="30" height="30"/></a></span>
 									<div class="dropdown-menu shadow dropdown-menu-right animated zoomIn" role="menu">
 										<a class="dropdown-item" role="presentation" href="<?php echo ADMIN_URL.'profile.php'?>"><i class="fas fa-id-badge fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
 										<a class="dropdown-item" role="presentation" href="<?php echo ADMIN_URL.'change_password.php'?>"><i class="fas fa-key fa-fw mr-2 text-gray-400"></i>&nbsp;Password</a>
@@ -140,38 +140,38 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 	        </div> 
 	    </div>
 	</div></div>
-	<div class="container-fluid mt-1 pt-6">
-	    <div class="row vh-100 flex-nowrap">
-	        <div class="col-2 collapse show sidebar vh-100 bg-dark position-fixed">
-	            <ul class="nav flex-column flex flex-fill sidebar vh-100" id="sidebar" >	            	
+	<div class="container-fluid mt-1 pt-8" style="z-index:100">
+	    <div class="row vh-100 ">
+	        <div class="col-2 collapse show sidebar vh-100 bg-dark position-fixed px-0"style="z-index:100">
+	            <ul class="nav flex-column flex flex-fill sidebar vh-100 navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="sidebar" >	            	
 					<li class="nav-item text-center">
                     <span id="user_uploaded_image_medium">
-					<img src="<?php echo USER_IMAGES_URL.rawurlencode($profileimage); ?>" class="rounded-circle mb-0 " width="100" height="100"/></li></span>
+					<img src="<?php echo USER_IMAGES_URL.rawurlencode($records->image_check($profileimage,USER_IMAGES_DIR )); ?>" class="rounded-circle mb-0 img-fluid" width="100" height="100"/></li></span>
 	            	<li class="nav-item">
-	                    <a class="nav-link <?php echo $index_active; ?>" href="<?php echo ADMIN_URL?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-tachometer-alt"></i> Dashboard</span></a>
+	                    <a class="nav-link <?php echo $index_active; ?>" href="<?php echo ADMIN_URL?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-tachometer-alt"></i> <span class="d-none d-md-inline-block">Dashboard</span></span></a>
 	                </li>
 	            	<?php
 	            	if($check->is_master_admin()):?>
 	            	<li class="nav-item">
-	                    <a class="nav-link <?php echo $userlist_active; ?>" href="<?php echo ADMIN_URL.'userlist.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-users"></i> Manage Users</span></a>
+	                    <a class="nav-link <?php echo $userlist_active; ?>" href="<?php echo ADMIN_URL.'userlist.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-users"></i> <span class="d-none d-md-inline-block">Manage Users</span></span></a>
 					</li>
                     <?php endif 	?>
 					<li class="nav-item">									
-					<a class="nav-link dropdown-btn <?php echo $manage_article; ?>"><span title="Click to view and manage your post" class="ml-2 d-none d-sm-inline dropdown-toggle">&nbsp; Manage Article </span> </a>
+					<a class="nav-link dropdown-btn <?php echo $manage_article; ?>"><span title="Click to view and manage your post" class="ml-2 d-none d-sm-inline dropdown-toggle">&nbsp;<span class="d-none d-md-inline-block">Manage Article</span>  </span> </a>
 						<div class="dropdown-container animated zoomIn">					
-						<a class="nav-link <?php echo $posts_active; ?>" href="<?php echo ADMIN_URL.'posts.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="far fa-newspaper"></i> &nbsp;&nbsp; Manage posts</span></a>
-						<a class="nav-link <?php echo $topics_active; ?>" href="<?php echo ADMIN_URL.'topics.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-key"></i>&nbsp;&nbsp;Manage Topics</span></a>
+						<a class="nav-link <?php echo $posts_active; ?>" href="<?php echo ADMIN_URL.'posts.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="far fa-newspaper"></i> &nbsp;&nbsp; <span class="d-none d-md-inline-block">Manage</span> posts</span></a>
+						<a class="nav-link <?php echo $topics_active; ?>" href="<?php echo ADMIN_URL.'topics.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-key"></i>&nbsp;&nbsp;<span class="d-none d-md-inline-block">Manage</span> Topics</span></a>
   						</div>
 	                </li>
 	                <li class="nav-item">
-	                    <a class="nav-link <?php echo $tickets_active; ?>" href="<?php echo ADMIN_URL.'tickets.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;Tickets</span></a>
+	                    <a class="nav-link <?php echo $tickets_active; ?>" href="<?php echo ADMIN_URL.'tickets.php'?>"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp;<span class="d-none d-md-inline-block">Tickets</span></span></a>
 	                </li>  
 					<li class="nav-item">
-	                    <a class="nav-link inactive_class" href="<?php echo BASE_URL.'home.php'?>" title="View the website as a normal user"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-user"></i>&nbsp;&nbsp;User Panel</span></a>
+	                    <a class="nav-link inactive_class" href="<?php echo BASE_URL.'home.php'?>" title="View the website as a normal user"><span class="ml-2 d-none d-sm-inline"><i class="fas fa-user"></i>&nbsp;&nbsp;<span class="d-none d-md-inline-block">User Panel</span></span></a>
 					</li>	
 	            </ul>
 			</div>
-			<div class="col offset-2 py-4">
+			<div class="col  offset-sm-2 py-3 pt-auto ml-aauto ">
     <script src="<?php echo JS_URL.'confirmdefaults.js'?>"></script>
     <script src="<?php echo JS_URL.'confirm.js'?>"></script>
     <script src="<?php echo JS_URL.'dropdown_button.js'?>"></script>

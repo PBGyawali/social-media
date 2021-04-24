@@ -1,23 +1,20 @@
-
-<?php include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-//dashboard.php
-
+<?php 
+include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 $stats = new stats();
-if(!$check->is_login())  
-$method->redirect(BASE_URL."#login",'error','You must log in first to view the page');
-if(!$check->is_admin())	
-$method->redirect(BASE_URL."admin/");
+//if(!$stats->is_login())
+//$stats->redirect(BASE_URL."#login",'danger','You must log in first to view the page');
+//elseif(!$stats->is_admin())	
+//$stats->redirect(BASE_URL."admin/");
 include_once(ADMIN_INCLUDES.'header.php');
-
 include_once(ADMIN_INCLUDES.'sidebar.php');
 $progresspoints=$stats->get_progress_points();
 $target=$stats->get_user_target();
 ?>
 <script type="text/javascript" src="<?= JS_URL?>hash.js"></script> 
-	<body id="page-top">
-			<div class="container container-fluid dashboard ">
+<body id="page-top">
+			<div class="container container-fluid dashboard ml-0 pl-0 ">
 				<a href="profile.php"><h1 >Welcome <?= $username ?></strong></h1></a>
-<h3 >Here are some stats for <?= $website_name?>:</h3><br>
+<h3 class="d-flex justify-content-between align-items-center">Here are some stats for <?= $website_name?>:</h3><br>
 <div class="d-sm-flex justify-content-between align-items-center mb-4">
   <form action="" method="post">
 <button class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" formaction="http://localhost/us_opt1/db_structure.php?server=1&db=registration" formtarget="_blank"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Administrate Database</button></form>
@@ -169,35 +166,35 @@ $target=$stats->get_user_target();
 
                 </div>
 						<div class="row">
-	            	<div class="col-sm-3"><a href="posts.php">
+	            	<div class="col-12 col-sm-6 col-md-3"><a href="posts.php">
 	            		<div class="card text-white bg-info mb-3 stats">
 						  	<div class="card-header text-center stats"><span><h4>Published Posts</h4></span></div>
 						  	<div class="card-body stats">
-						    	<h1 class="card-title text-center stats"><?= $stats->getAllPublishedPosts(); ?></h1>
+						    	<h2 class="card-title text-center stats"><?= $stats->getAllPublishedPosts(); ?></h2>
 						  	</div>
 						</div></a>
 	            	</div>
-	            	<div class="col-sm-3"><a href="posts.php">
+	            	<div class="col-12 col-sm-6 col-md-3"><a href="posts.php">
 	            		<div class="card text-white bg-warning mb-3 stats">
 						  	<div class="card-header text-center stats"><span id="published_post"><h4>Unpublished Post</h4></span></div>
 						  	<div class="card-body stats">
-						    	<h1 class="card-title text-center stats"><?= $stats->getAllUnPublishedPosts(); ?></h1>
+						    	<h2 class=" text-center stats"><?= $stats->getAllUnPublishedPosts(); ?></h2>
 						  	</div>
 						</div></a>
 	            	</div>
-	            	<div class="col-sm-3"><a href="tickets.php">
+	            	<div class="col-12 col-sm-6 col-md-3"><a href="tickets.php">
 	            		<div class="card text-white bg-danger mb-3 stats">
 						  	<div class="card-header text-center"><span id="tickets"><h4>Unresolved Tickets</h4></span></a></div>
 						  	<div class="card-body">
-						    	<h1 class="card-title text-center"><?= $stats->getAllUnResolvedTickets(); ?></h1></a>
+						    	<h2 class="card-title text-center"><?= $stats->getAllUnResolvedTickets(); ?></h2></a>
 						  	</div>
 						</div></a>
 	            	</div>
-	            	<div class="col-sm-3"><a href="#">
+	            	<div class="col-12 col-sm-6 col-md-3"><a href="#">
 	            		<div class="card text-white bg-success mb-3 stats">
 						  	<div class="card-header text-center"><span><h4>Website Visitors</h4></span></div>
 						  	<div class="card-body">
-						    	<h1 class="card-title text-center"><?= $stats->getAllVisitCount(); ?></h1>
+						    	<h2 class="card-title text-center"><?= $stats->getAllVisitCount(); ?></h2>
 							  </div>							
 						</div></a>
 						<!--from here starts the new div--> 						
@@ -245,15 +242,7 @@ $target=$stats->get_user_target();
 					</div><!--card siv ends-->
 				</div>
 			</div>
-			<footer class="bg-white sticky-footer">
-        <div class="container my-auto">		
-			<div class="text-center my-auto copyright"><span>Copyright © <?= $website_name?> <script>
-                  document.write(new Date().getFullYear())
-                </script></span>			
-		</div>
-			<a class="no-border fixed-bottom text-right size-30 scroll-to-top" href="#page-top"><i class="fas  fa-4x fa-angle-up"></i></a>
-        </div>
-    </footer>
+			<?php include_once(USER_INCLUDES.'footer_top.php');?>
 		</div>
 	</div>	
 </body>

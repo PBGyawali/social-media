@@ -1,13 +1,13 @@
                                                                
 <?php include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
 
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+
+$katha = new publicview();
 
 if(!$check->is_login())
-    $method->redirect(BASE_URL,'error','You must log in to view that page');
+    $method->redirect(BASE_URL,'danger','You must log in to view that page');
 elseif (!$check->is_admin())
-    $method->redirect(ADMIN_URL,'error','You must be admin to view that page');        
+    $method->redirect(ADMIN_URL,'danger','You must be admin to view that page');        
 else{ 
     require_once(ADMIN_SERVER.'settings_server.php');
     $row = WebsiteArray(); 
@@ -143,7 +143,7 @@ include_once(ADMIN_INCLUDES.'sidebar.php');
                         </select>                  
                 </div>
             </div>
-
+<input type="hidden" name="user_id" value="<?=$_SESSION['id']?>">
         </div>
     </div>
 </form>

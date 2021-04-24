@@ -1,6 +1,5 @@
 <?php  include_once($_SERVER['DOCUMENT_ROOT'].'/social_media/includes/init.php');
-include_once(ADMIN_CLASS.'katha.php');
-$katha = new katha();
+$katha = new publicview();
 // initializing variables
 $username = "";
 $email    = "";
@@ -25,20 +24,22 @@ if (isset($_POST['reset'])) {
     $username=$row['username'];
     $first_name=$row['first_name'];
     $last_name=$row['last_name'];
-    $full_name="$first_name" . "$last_name";
+	$full_name=$first_name ." ". $last_name;
+	$website_name=$katha->WebsiteName();
     if (empty($full_name)) 
         $receiver= $username;      
     else 
-     $receiver="$first_name". " ". "$last_name";
+     $receiver=$full_name;
   	$token = bin2hex(random_bytes(50));    
-    $katha->insert('password_reset',array('email','token'), array($email, $token));
+    $katha->insert('verify_table',array('email','token'), array($email, $token));
     $to = $email;
-    $subject = "Your password reset link for " . $katha->WebsiteName();
+    $subject = "Your password reset link for " . $website_name;
     $msg = "Hi"." ". $receiver.",". " click on this <a href=".BASE_URL."new_password.php?token=" . $token . "\">link</a> to reset your password on our site.Please note that this password reset link will expire in 30 minutes.";
     $msg = wordwrap($msg,70);    
-    $headers = "From:". $katha->WebsiteName() ." Admin";
-    mail($to, $subject, $msg, $headers);    
-    $response = "The password reset email has been sent to ".$email;
+    $headers = "From:". $website_name ." Admin";
+    mail($to, $subject, $msg, $headers);   
+	$response='<div class="alert alert-info">The password reset email has been sent to '.$email.'</div>';
+	$katha->response($response);
   }
 	
 	
@@ -51,13 +52,12 @@ if (isset($_POST['update_user']))
 		$last_name = $katha->clean_input($_POST['last_name']);
 		$user_type = $katha->clean_input($_POST['user_type']);
 		$row="";
-		$katha->query ="UPDATE users SET username=?, email=?, first_name= ?, 
-		last_name= ?, user_type= ? WHERE id=?";
-		$result=$katha->execute(array($username,$email,$first_name,$last_name,$user_type, $id));
+		$result= $katha->UpdateDataColumn('users',array('username','email', 'first_name', 'last_name','user_type'),
+		array($username,$email,$first_name,$last_name,$user_type),'id',$id);
 		if ($result)
 		{
 				$status="success";
-				$response="The user Profile was successfully updated!";
+				$response='<div class="alert alert-success">The user Profile was successfully updated!</div>';
 				$row='<tr id="userlist_'.$id.'">
 				<td class="s_no">1</td>
 				<td class="id">'.$id.'</td>
@@ -81,68 +81,68 @@ if (isset($_POST['update_user']))
 					</div>		
 				</td>';
 		}
-	else
-		{
+	else{
 			$status="error";
-			$response="The user profile could not be updated due to some error";
+			$response='<div class="alert alert-danger">The user profile could not be updated due to some error</div>';
 		}
-		$method->response($response,$status,$row);
+		$katha->response($response,$status,$row);
 }
 
 if (isset($_POST['fetch_detail'])) {
-    $id=$katha->clean_input($_POST['id']);    
-	$detail=GetUserDetailById($id); 
-	$userlogs= GetUserLogById($id);
-	$finaldetail = array(      
-        'detail' => $detail, 
-		'logs' => $userlogs,            
-        );
-      echo json_encode($finaldetail);
+	$katha->response($katha->UsersArray($katha->clean_input($_POST['id'])),'',USER_IMAGES_URL);
 }
 
 function arraypush($message){
 	global $errors;
    return array_push($errors, $message);
-  }
+}
 
 
 if (isset($_POST['update_status'])) 
-{   $value=array();
-	$column=array();
+{   $value=$column=array();
 	$id=$katha->clean_input($_POST['id']); 
 	if(isset($_POST['user_status']) && !empty($_POST['user_status']))
 	{
 		$user_status=$katha->clean_input($_POST['user_status']); 
-		array_push($column,'user_status');
-		array_push($value,$user_status);
+		$column[]='user_status';
+		$value[]=$user_status;
 	}	
 	if (isset($_POST['user_status']) && !empty($_POST['user_status'])&& isset($_POST['remarks']) && !empty($_POST['remarks']))
 	{
 		$remarks=$katha->clean_input($_POST['remarks'],'e'); 
-		array_push($column,'remarks');
-		array_push($value,$remarks);
+		$column[]='remarks';
+		$value[]=$remarks;
 	}
 	elseif ((!isset($_POST['user_status'])&& isset($_POST['remarks'])) || (isset($_POST['user_status']) && empty($_POST['user_status'])&& isset($_POST['remarks'])))
 	{
 		$remarks=$katha->clean_input($_POST['remarks'],'e'); 
-		array_push($column,'remarks');
-		array_push($value,$remarks);
+		$column[]='remarks';
+		$value[]=$remarks;
 	}
-	array_push($value,$id);	
-	$column_condition=$katha->implode_array($column,'?',',');
-	$katha->query = "UPDATE userlogs SET $column_condition WHERE user_id=? ";
-	$result = $katha->execute($value); 
+	$result = $katha->UpdateDataColumn('userlogs',$column,$value,'user_id',$id);
 	if ($result){
 		$status="success";
-		$response=$user_status;
+		$response='<div class="alert alert-success">The profile status was successfully '.$user_status.'d</div>';
 	}
 	else{
 		$status="error";
-		$response="The profile status could not be changed";
+		$response='<div class="alert alert-danger">The profile status could not be changed </div>';
 	}
 	$katha->response($response,$status);	
 }
 
+
+if (isset($_POST['verify'])) 
+{   
+	$id=$katha->clean_input($_POST['id']); 
+	$value=$katha->clean_input($_POST['verify_type']);
+	$result = $katha->UpdateDataColumn('userlogs','verified',$value,'user_id',$id);
+	if ($result)
+		$response='<div class="alert alert-success">The profile verification status has been updated</div>';
+	else
+		$response='<div class="alert alert-warning">The profile verification status has not been changed</div>';
+	$katha->response($response);	
+}
 
 Function GetUserLogById($id){
 	global $katha;
@@ -160,45 +160,30 @@ if (isset($_POST['delete'])) {
 	$id=$katha->clean_input($_POST['id']);
 	$user_type=$katha->clean_input($_POST['user_type']);
 	$username=$katha->clean_input($_POST['username']);
-	$profile_image=$katha->clean_input($_POST['profile_image']);	
-	if (empty($user_id)) 
-	{ 
-		$status="error";
-		$response= "You must log in to perform this action"; 
-	}  
+	$profile_image=$katha->clean_input($_POST['profile_image']);
+	$status="danger";
+	if (empty($user_id))
+		$message= "You must log in to perform this action";
 	else if($user_id==$id) 
-	{
-		$status="error";
-		$response="You cannot delete yourself";
-	}
-	else if($user_type=='owner') 
-	{
-		$status="error";
-		$response="You cannot delete ".$user_type. " of this website";
-	}
-	else if(in_array($username,array('Puskar','Prakhar'))) 
-	{
-		$status="error";
-		$response="Do not try to be mischievous or you will be logged out.";
-	}
+		$message="You cannot delete yourself";
+	else if($user_type=='owner') 	
+		$message="You cannot delete ".$user_type. " of this website";
+	else if(in_array($username,array('Puskar','Prakhar')))
+		$message="Do not try to be mischievous or you will be logged out.";
 	else if(in_array($id,array('1','2'))) 
-	{
-		$status="error";
-		$response="This user account is not allowed to be deleted.";
-	}
+		$message="This user account is not allowed to be deleted.";
 	else{
 		$result = $katha->Delete('users','id',$id);	
 		if ($result){
-		$katha->imageDelete(USER_IMAGES_DIR.$profile_image);
-		$status="success";
-		$response="The user account was successfully deleted";
+			$katha->imageDelete(USER_IMAGES_DIR.$profile_image);
+			$status="success";
+			$message="The user account was successfully deleted";
 		}
-		else{
-			$status="error";
-			$response="The user account could not be deleted";
-		}
+		else
+			$message="The user account could not be deleted";
 	}
-    $method->response($response,$status);	
+	$response='<div class="alert alert-'.$status.'">'.$message.'</div>';
+	$katha->response($response,$status);	
 }
 
 
@@ -230,9 +215,7 @@ if (isset($_POST['reg_admin']))
 	if (count($errors) == 0)
 	{
 			// first check for duplicate username and/or email
-			$katha->query ="SELECT username,email FROM users WHERE username=? OR email=? LIMIT 1";	
-			$katha->execute(array($username,$email));
-			$user = $katha->get_array(); 
+			$user=$katha->get_data(array('username','email'),'users',array('username','email'),array($username,$email),'OR',1);			
 					if ($user) 
 					{ // if user exists
 							if ($user['username'] === $username) {
@@ -249,23 +232,21 @@ if (isset($_POST['reg_admin']))
 					else
 					{
 							$password=password_hash($password, PASSWORD_DEFAULT);//hash the password before saving in the database	
-							$profile_image= $katha->make_avatar(strtoupper($username[0]));//make avatar image as default image						
-							$katha->query ="INSERT INTO users (username, email, user_type, password,profile_image) 
-							VALUES (?, ?, ?, ?,?)";
-							$result=$katha->execute(array($username,$email,$user_type,$password,$profile_image));							
+							$profile_image= $katha->make_avatar(strtoupper($username[0]));//make avatar image as default image
+							$result= $katha->insert('users',array('username', 'email','user_type', 'password','profile_image'),
+                                array($username, $email,$user_type, $password,$profile_image));	
 								if ($result)
 								{
 									$inserted_id=$katha->id();
 									if ($inserted_id) 
                                             {
-														$katha->query ="INSERT INTO userlogs (user_id)	VALUES(?)";
-														$result=$katha->execute($inserted_id);
-														if ($result)
+												$newresult= $katha->insert('userlogs','user_id',$inserted_id);
+														if ($newresult)
 														{
 															$token = bin2hex(random_bytes(50));          
 															// store token in the password-reset database table against the user's email
-															$katha->query="INSERT INTO password_reset(email, token,token_type) VALUES (?, ?,?) " ;                     
-															$katha->execute(array($email,$token,'account_verify'));														
+															$katha->insert('verify_table',array('user_id','email','token','token_type'),
+															array($inserted_id,$email,$token,'account_verify'));																				
 															$katha->activitylogs($inserted_id, 'An admin registered your ','register','profile');
 															$to = $email;
 															$subject = "Verify your account on ".SITE_NAME;																		
@@ -305,7 +286,7 @@ if (isset($_POST['reg_admin']))
 														}
 											}
 											else
-											{
+											{	$status="error";
 												arraypush( "Our database is facing some error. Please try again later.");		
 											}
 								}
@@ -316,6 +297,6 @@ if (isset($_POST['reg_admin']))
 								}
 					}			
 	 }	
-	$method->response($response,$status,$row);	
+	$katha->response($response,$status,$row);	
 }
 ?>

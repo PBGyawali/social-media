@@ -2,24 +2,13 @@
 $article=new article;
 $topics =$article->getAllArray('topics');
 $posts = $article->getAllPosts();
-if(!$check->is_login())  
-$method->redirect(BASE_URL."#login",'error','You must log in first to view the page');
-if(!$check->is_admin())$method->redirect(ADMIN_URL);
+//if(!$article->is_login())  
+//$article->redirect(BASE_URL."#login",'danger','You must log in first to view the page');
+//if(!$article->is_admin())$article->redirect(ADMIN_URL);
 include_once(ADMIN_INCLUDES.'header.php');
 include_once(ADMIN_INCLUDES.'sidebar.php');
-?>
-<script>
-$(document).ready(function(){
-    $('.input-daterange').datepicker({
-        todayBtn: "linked",
-        format: "yyyy-mm-dd",
-        autoclose: true
-    }); 
-});
-</script>
-	<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        	<span id="message"></span>
+?>					
+				<span class="text-center position-absolute w-100"id="message" style="z-index:50"></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -29,10 +18,10 @@ $(document).ready(function(){
 	            			<div class="col-sm-4">
 	            				<div class="row input-daterange">
 	            					<div class="col-md-6">
-		            					<input type="text" name="from_date" id="from_date" class="form-control form-control-sm" placeholder="From Date" readonly />
+		            					<input type="date" name="from_date" id="from_date" class="form-control form-control-sm" placeholder="From Date" />
 		            				</div>
 		            				<div class="col-md-6">
-		            					<input type="text" name="to_date" id="to_date" class="form-control form-control-sm" placeholder="To Date" readonly />
+		            					<input type="date" name="to_date" id="to_date" class="form-control form-control-sm" placeholder="To Date"  />
 		            				</div>
 		            			</div>
 		            		</div>
@@ -44,7 +33,7 @@ $(document).ready(function(){
 	            			<div class="col-md-2 text-right" >
 	            				<a href="#" name="export" id="export" class="text-success"><i class="fas fa-file-csv fa-2x"></i></a>
 	            				&nbsp;
-	            				<button type="button" name="add_post" id="add_post" class="btn btn-success btn-sm" style="margin-top: -15px;"><i class="fas fa-plus"></i> Add new</button>
+	            				<button type="button" name="add_post" id="add_post" class="btn btn-success btn-sm mr-2" style="margin-top: -15px;"><i class="fas fa-plus"></i>  <span class="d-none d-sm-inline-block">Add new</span></button>
 	            			</div>
 	            		</div>
 	            	</div>
@@ -74,7 +63,7 @@ $(document).ready(function(){
 						<td class="post_id"><?php echo $post['id']; ?></td>
 						<td class="postname">
 								<a 	target="_blank"
-								href="<?php echo BASE_URL.'single_post?post-slug='.$post['slug'];?>">
+								href="<?php echo BASE_URL.'single_post.php?post-slug='.$post['slug'];?>">
 									<?php echo $post['title'];?>	
 								</a>
 							</td>
@@ -127,7 +116,7 @@ $(document).ready(function(){
 
 <div id="postModal" class="modal fade" data-backdrop="static">
   	<div class="modal-dialog modal-lg">
-    	<form method="post" id="post_form" enctype="multipart/form-data" action="<?php echo USER_SERVER_URL.'post_functions.php'?>">
+    	<form method="post" id="post_form" class="form" enctype="multipart/form-data" action="<?php echo USER_SERVER_URL.'post_functions.php'?>">
       		<div class="modal-content">
         		<div class="modal-header">
           			<h4 class="modal-title" id="modal_title">Create Post</h4>
@@ -204,8 +193,7 @@ $(document).ready(function(){
     	</form>
   	</div>
 </div>
-
-<link rel="stylesheet" href="<?php echo CSS_URL?>datepicker.css" >
+<?php include_once(INCLUDES.'admin_footer.php')?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.8.0/ckeditor.js"></script>
 <script src="posts.js"></script>
 <script>CKEDITOR.replace('body');</script>

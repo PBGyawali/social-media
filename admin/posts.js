@@ -1,9 +1,6 @@
 
 $(document).ready(function(){
 
-	var dataTable = $('#list').DataTable({"order" : [] } );
-	var url=$('#post_form').attr('action');
-	$('#post_form').parsley();
 
 	$('#add_post').click(function(){
 		$('#post_form')[0].reset();
@@ -25,7 +22,6 @@ $(document).ready(function(){
 		$('#post_form').parsley().reset();
 		$('#publish,#anonymity').attr('checked',false);	
 		var id = $(this).data('id');
-		var action=$(this).data('action');
 		var url=$('#post_form').attr('action');			
 		$('#submit_button').attr('disabled', false);
 		$('#featured_image').removeAttr('required');
@@ -81,8 +77,8 @@ $(document).ready(function(){
 					$('#submit_button').attr('disabled', 'disabled').val('wait...');
 				},
 				error:function(request)
-				{          
-					$('#error_msg').html('there was some error in the database. Please try again later').show().fadeTo(2500, 500).slideUp(500);
+				{  
+					showMessage('<div class="alert alert-warning">there was some error in the database. Please try again later</div>')
 				} ,
 				complete:function(){	
 					$('#submit_button').attr('disabled', false);
@@ -91,10 +87,8 @@ $(document).ready(function(){
 				success:function(data)
 				{	var status = data.status;
 					var response = data.response;
-					if (status=="error")					
-						$('#error_msg').html(response).show().fadeTo(2500, 500).slideUp(500);	
-					else{
-						$('#success_msg').html(response).show().fadeTo(2500, 500).slideUp(500);															
+					showMessage(response)
+					if (status=="success"){										
 							switch(action) 
 							{
 								case "create":										
@@ -126,10 +120,9 @@ $(document).ready(function(){
 	      	success:function(data)
 	      	{
 				var status = data.status;
-            	var response = data.response;			
-				if (status=="error")
-					$('#error_msg').html(response).show().fadeTo(2500, 500).slideUp(500);
-				else{	$('#success_msg').html(response).show().fadeTo(2500, 500).slideUp(500);		 
+				var response = data.response;
+				showMessage(response)			
+				if (status=="success"){
 						switch(action) 
 						{
 							case "publish":
@@ -150,12 +143,9 @@ $(document).ready(function(){
 	        }
 	    });
 	});
-
-
 	$(document).on('click', '.delete_button', function(){
 		var id = $(this).data('id');
 		$row=$(this).closest('tr');
-		var action=$(this).data('action');		
 		$.confirm({
 			title: 'Delete!',
 			content: 'This will delete the data permanently. Proceed?',    
@@ -169,11 +159,9 @@ $(document).ready(function(){
 												dataType:'JSON',
 												success:function(data){
 													var status = data.status;
-													var response = data.response;						
-													if (status=="error")								
-														$('#error_msg').html(response).show().fadeTo(2500, 500).slideUp(500);	
-													else{
-														$('#success_msg').html(response).show().fadeTo(2500, 500).slideUp(500);	
+													var response = data.response;
+													showMessage(response)						
+													if (status=="success"){
 														$row.fadeOut('slow');
 													}								
 												}
@@ -183,20 +171,4 @@ $(document).ready(function(){
 					}		
 		});	
   	});
-
-	  
-  	$('#filter').click(function(){
-  		var from_date = $('#from_date').val();
-  		var to_date = $('#to_date').val();  		
-  		load_data(from_date, to_date);
-  	});
-
-  	$('#refresh').click(function(){
-  		$('#from_date').val('');
-  		$('#to_date').val('');  		
-  		load_data();
-  	});
-
-  	
-
 });
