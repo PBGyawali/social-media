@@ -15,6 +15,7 @@ $profile_image="";
 $message='';
 $user_id=(isset($_SESSION['id']))?$_SESSION['id']:'';
 $response='';
+$status='danger';
 
 // UPDATE USER PASSWORD
 if (isset($_POST['update_password'])) 
@@ -36,7 +37,7 @@ if (isset($_POST['update_password']))
   // Finally, register user if there are no errors in the form
   if (count($errors) == 0) 
   {   
-      $saved_password= $katha-> get_data('password','users','id',$user_id,'',1);           
+      $saved_password= $katha-> get_data('password','users','id',$user_id);           
       if ($saved_password)
       {
               $password=md5($old_password);
@@ -45,11 +46,18 @@ if (isset($_POST['update_password']))
                   $confirmedpassword=password_hash($new_password, PASSWORD_DEFAULT); 
                   $result=updatePassword($confirmedpassword,'id',$user_id);                      
                     if ($result)  
-                    {        
-                        $katha->UpdateDataColumn('userlogs','last_password_change',$katha->get_datetime(),'user_id',$user_id); 
-                        //$_SESSION["loggedin"] = false;
-                        $response="Your password has been successfully updated. Please re-login. ";
-                        //session_destroy();                              
+                    {                                              
+                        if($katha->row()>0){ 
+                          $katha->UpdateDataColumn('userlogs','last_password_change',$katha->get_datetime(),'user_id',$user_id);  
+                          $response="Your password has been successfully updated. Please re-login. ";
+                          $status='success'; 
+                          //$_SESSION["loggedin"] = false;                        
+                          //session_destroy();                   
+                        }
+                        else{
+                          $response = "No new changes were made";
+                          $status='warning';
+                        }                              
                     }
                     else                          
                     arraypush("There was some error in updating your password");
@@ -57,9 +65,70 @@ if (isset($_POST['update_password']))
             else                                   
             arraypush("The current password does not match the server data");
       }
+      
   } 
-  $finalresponse = array('success' => $response, 'error' => $errors, );
-  echo json_encode($finalresponse);
+  $response.=implode('<br>',$errors);
+  $response= '<div class="alert alert-'.$status.'">'.$response.'</div>';   
+  $katha->response($response,$status);
+}
+
+// Update user profile
+if (isset($_POST['update_user'])) 
+{  
+  $username = $katha->clean_input($_POST['username']);
+  $email = $katha->clean_input($_POST['email']);
+  $first_name = $katha->clean_input($_POST['first_name']);
+  $last_name = $katha->clean_input($_POST['last_name']);
+  $sex = $katha->clean_input($_POST['sex']);  
+  $facebook_data = $katha->clean_input($_POST['facebook_data'],'e');
+  $twitter_data = $katha->clean_input($_POST['twitter_data'],'e');
+  $googleplus_data = $katha->clean_input($_POST['googleplus_data'],'e'); 
+  $id = $katha->clean_input($_POST['user_id']); 
+  if (empty($user_id))    arraypush("You must log in to perform this action");
+  elseif($user_id!=$id)   arraypush("The profile does not belong to the logged in user");
+  else{
+    $empty=$check->is_empty(array('Username'=>$username,'Email'=>$email));
+    if ($empty)$errors[]=$empty;
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {arraypush("Invalid email address"); }
+  }
+  $response.=implode('<br>',$errors);  
+  if (count($errors) == 0) 
+    {  
+          // first check the database to make sure  a user does not already exist with the same username and/or email
+          $row = $katha->get_data(
+                                  array('username','email'),'users',
+                                  array('(username','email', 'id!'),
+                                  array($username,$email,$id),
+                                  array(' OR ',') AND',''));          
+          if ($row){ // if email exists
+                if ($email == $row['email']) 
+                arraypush("The requested Email address already exists");
+
+                if ($username == $row['username']) 
+                arraypush("The selected Username already exists. Please try another."); 
+                $response.=implode('<br>',$errors);               
+          }
+          else{
+                  $update= $katha->UpdateDataColumn('users',array('email', 'first_name', 'last_name' , 'sex' ,
+                  'facebook', 'twitter', 'googleplus' ),array($email,$first_name,$last_name,$sex,
+                  $facebook_data,$twitter_data, $googleplus_data),'id',$user_id);
+                  if ($update)
+                  {                      
+                      if($katha->row()>0){  
+                        $response = "Your Profile has been updated!";
+                        $status='success';
+                        $katha->setSession(array("email",'username'),array($email,$username) );
+                        $katha->activitylogs($id, 'You updated your ','update','profile');
+                      }
+                      else{
+                        $response = "No new changes were made";
+                        $status='warning';
+                      }                      
+                  }
+              }
+    }
+    $response= '<div class="alert alert-'.$status.'">'.$response.'</div>';   
+    $katha->response($response,$status);
 }
 
     if (isset($_POST['check'])) {  
@@ -94,7 +163,7 @@ if (isset($_POST['reg_user']))
   if (!filter_var($email, FILTER_VALIDATE_EMAIL))  arraypush("Invalid email address"); 
   if (count($errors) == 0) 
     {   // first check the database to make sure   a user does not already exist with the same username and/or email
-        $user=$katha->get_data(array('username','email') ,'users',array('username','email'),array($username,$email),'OR',1) ;
+        $user=$katha->get_data(array('username','email') ,'users',array('username','email'),array($username,$email),'OR') ;
         if ($user){	           
                   if ($user['username'] === $username)                   
                   arraypush("The selected Username already exists. Please try another");                  
@@ -146,63 +215,7 @@ if (isset($_POST['reg_user']))
 
 
 	
-// Update user profile
-if (isset($_POST['update_user'])) 
-{  
-  $username = $katha->clean_input($_POST['username']);
-  $email = $katha->clean_input($_POST['email']);
-  $first_name = $katha->clean_input($_POST['first_name']);
-  $last_name = $katha->clean_input($_POST['last_name']);
-  $sex = $katha->clean_input($_POST['sex']);  
-  $facebook_data = $katha->clean_input($_POST['facebook_data'],'e');
-  $twitter_data = $katha->clean_input($_POST['twitter_data'],'e');
-  $googleplus_data = $katha->clean_input($_POST['googleplus_data'],'e'); 
-  $id = $katha->clean_input($_POST['user_id']); 
-  if (empty($user_id))    arraypush("You must log in to perform this action");
-  elseif($user_id!=$id)   arraypush("The profile does not belong to the logged in user");
-  else{
-    $empty=$check->is_empty(array('Username'=>$username,'Email'=>$email));
-    if ($empty)$errors=$empty;
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {arraypush("Invalid email address"); }
-  }
-  if (count($errors) == 0) 
-    {  
-          // first check the database to make sure  a user does not already exist with the same username and/or email
-          //$katha->query="SELECT username,email FROM users WHERE (username=? OR email=?) AND id!= ? LIMIT 1" ;
-          $row = $katha->get_data(
-                                  array('username','email'),'users',
-                                  array('(username','email', 'id!'),
-                                  array($username,$email,$id),
-                                  array(' OR ',') AND',''),'1');
-          //$katha->execute(array($username,$email,$id));
-          //$row = $katha->get_array();
-          //$katha->close();
-          if ($row){ // if email exists
-                if ($email == $row['email']) 
-                arraypush("The requested Email address already exists");
 
-                if ($username == $row['username']) 
-                arraypush("The selected Username already exists. Please try another.");                
-          }
-          else{
-                  $update= $katha->UpdateDataColumn('users',array('email', 'first_name', 'last_name' , 'sex' ,
-                  'facebook', 'twitter', 'googleplus' ),array($email,$first_name,$last_name,$sex,
-                  $facebook_data,$twitter_data, $googleplus_data),'id',$user_id);
-                  if ($update)
-                  {                      
-                      if($katha->row()>0){  
-                        $response = "Your Profile has been updated!";
-                        $katha->setSession(array("email",'username'),array($email,$username) );
-                        $katha->activitylogs($id, 'You updated your ','update','profile');
-                      }
-                      else
-                      $response = "No new changes were made";
-                  }
-              }
-    }
-    $finalresponse = array('success'=> $response,'error' => $errors);
-    echo json_encode($finalresponse); 
-}
 
 // LOGIN USER AS A GUEST
 if (isset($_POST['login_guest'])) {
@@ -313,7 +326,7 @@ function updateStatus($id,$condition,$value,$attr=array()){
 function loginstatus($row){
   global $katha;
   $id=$row['id']; 
-  return updateStatus($id,array('login_status','last_login_attempt'),array(0,$katha->get_datetime()));
+  return updateStatus($id,array('login_status','last_login_attempt'),array('0',$katha->get_datetime()));
 }
 
 function login($row){
@@ -338,7 +351,7 @@ function login($row){
 
 function getuserid($username){
   global $katha;
-  return $katha->get_data('id','users',array('username','email'),array($username,$username),'OR',1);
+  return $katha->get_data('id','users',array('username','email'),array($username,$username),'OR');
 }
 
 function location($user_type=null,$login=null)
@@ -379,12 +392,12 @@ if (isset($_POST['reset-password'])){
     if ($empty)$errors=$empty; 
     if (count($errors) == 0) 
     {         
-          $result =$katha->get_data('id','users','email',$email,'',1);
+          $result =$katha->get_data('id','users','email',$email);
             if(!$result)
                 arraypush("Sorry, no user exists on our system with that email");
             else{
                 $id=$result['id'];                
-                $result = $katha->get_data('user_status','userlogs','user_id',$id,'',1);
+                $result = $katha->get_data('user_status','userlogs','user_id',$id);
                 $status=$result['user_status'];
                 if(in_array($status,array('Disabled','Locked','Unauthenticated')))                
                   arraypush("Sorry, your account is still " .$status. ".  The password cannot be reset. ");                
@@ -418,7 +431,7 @@ if (isset($_POST['new_password'])) {
         // Grab to token that came from the email link        
         $token= (isset($_SESSION['token']))?$_SESSION['token']:'';        
         // select email address of user from the password_reset table
-        $row =$katha->getArray('verify_table',array('token','token_type'),array($token,'password_reset'),'AND',1);
+        $row =$katha->getArray('verify_table',array('token','token_type'),array($token,'password_reset'));
         $katha->close();
         if ($row){     
               $email=$row['email'];             
@@ -464,7 +477,7 @@ if (isset($_GET['verify'])){
         $token = $katha->clean_input($_GET['verify']); // Set hash variable
             // Grab to token that came from the email link         
             // select email address of user from the verify_table table 
-            $row =$katha->getArray('verify_table',array('token','token_type'),array($token,'account_verify'),'AND',1);
+            $row =$katha->getArray('verify_table',array('token','token_type'),array($token,'account_verify'));
             $katha->close();
             if ($row){     
                   $email = $row['email'];

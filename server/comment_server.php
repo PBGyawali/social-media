@@ -5,7 +5,7 @@ $user_id =(isset($_SESSION['id'])?$_SESSION['id']:'');
 	if (isset($_GET['post-slug']) && !empty($_GET['post-slug'])) {
 	$slug = $_GET['post-slug'];	
 	// get postid from slug out of the database
-	$post_id = $katha->get_data('id','posts','slug',$slug,'',1);
+	$post_id = $katha->get_data('id','posts','slug',$slug);
 	if(!empty($post_id))// Get all comments from database
 	$comments = getallcomments($post_id);}
 function getallcomments($id){
@@ -27,7 +27,7 @@ function getProfilePictureById($id){
 
 function getColumnById($id,$column){
 	global $katha;
-	return $katha->get_data($column,'users','id',$id,'',1);
+	return $katha->get_data($column,'users','id',$id);
 }
 	// Receives a comment id and returns the username
 	function getRepliesByCommentId($id){
