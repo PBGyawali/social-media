@@ -1,10 +1,12 @@
 $(document).ready(function(){
+	$('#user_form').parsley();
 	var url = $('#user_form').attr('action');
-	$('#user_form').on('submit', function(e){		
-		e.preventDefault();							
+	var formclass= $('#user_form').attr('class');
+	$('#user_form').on('submit', function(event){		
+		event.preventDefault();
+		if($('#user_form').parsley().isValid())
+		{							
 		var data = new FormData(this);
-		// If you want to add an extra field for the FormData
-		data.append("update_user", 1);
 		buttonvalue=$('#submit_button').html();
 			$.ajax({
 				url:url,
@@ -12,6 +14,8 @@ $(document).ready(function(){
 				data:data,
 				contentType:false,
 				processData:false,
+				cache: false,
+            	timeout: 800000,
 				dataType:"JSON",
 				beforeSend:function(){
 					$('#submit_button').attr('disabled', 'disabled').html('wait...');					
@@ -20,14 +24,15 @@ $(document).ready(function(){
 					$('#submit_button').attr('disabled', false).html(buttonvalue);					
 				},
 				success:function(data){	
-					errors=data.error;					
-					if(errors!='')				
-						/*$.each(errors,function(i){totalerrors="<p>"+errors[i]+"</p>";});*/	
-						$('.error_msg').html(errors).show().fadeTo(3500, 500).slideUp(500);								
-					else
-						$('#success_msg').html(data.success).show().fadeTo(2500, 500).slideUp(500);
+					$('#alert_action,#message').fadeIn().html(data.response);  
+					timeout();				
+					if(data.status == 'success' && formclass=='password'){
+						$('#user_form')[0].reset();									
+						$('.timeago').timeago('update', new Date());
+					}
 				}
-			})		
+			})
+		}		
 	});		
 			$('.social_media_data').each(function (){
 				var data= $(this).val();
@@ -46,7 +51,7 @@ $(document).ready(function(){
 			$("#google-plus").click(function(){
 				socialMedia('google-plus','red');	
 			});			
-
+		
 	function socialMedia($title,$color='blue'){
 		$.confirm
 		({

@@ -1,5 +1,5 @@
 $('document').ready(function(){
-  
+   emailcondition=usernamecondition=true
   $('.user_form').parsley();
 
   $('.datacheck').on('change', function(){    
