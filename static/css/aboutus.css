@@ -112,8 +112,6 @@ section .social-nav {
 }
 .social-nav ul li:hover {opacity: 1;}
 
-button.full-screen:hover {opacity: 1;}
-
 #arrow_left, #arrow_right {
 	bottom:30px;
 	height:42px;

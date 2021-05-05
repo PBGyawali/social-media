@@ -27,8 +27,8 @@ display: block;
 margin-left: auto;
 margin-right: auto;
 border:0;
-width:200 ;
-height:200;
+width: 120px ;
+height:120px;
 margin-top: 0px
 
 }
@@ -84,7 +84,6 @@ margin: auto;
      border-radius: 5px;
 }
 
-
 /*Styling for errors on form*/
 .form-input-group.form_error input {
   border: 5px solid #D83D5A;
@@ -92,41 +91,14 @@ margin: auto;
 .form-input-group.form_success input {
   border: 5px solid green;
 }
-.form-input-group span {
-  width: auto;
-  height: 35px;
-  margin: 0px 0px 0px 20px;
-  font-size: 1em;  
-  z-index: 200;
-  float: right;
-  top:0;
-  position: relative;
+.form-input-group span {  
+  margin-left: 20px;
 }
-
-.form-input-group.form_error span {  
-  color: #D83D5A;
-}
-.form-input-group.form_success span {  
-  color: rgb(3, 202, 3);
-  }
-
-  .form-input-group span i.checkdata {  
-    width: auto;
-      height: 0px;
-      margin: 0.3em 200px 0px 120px;
-      font-size: 1rem; 
-      z-index: 200;
-      display: block;        
-      padding:0px;  
-      float:right;
-      margin-left: 0.5em;
-      position: relative; 
-    } 
 /*Styling in case no errors on form*/
-  .form-input-group.form_success span i.checkdata {  
+.form-input-group.form_success span,.form-input-group.form_success span i.checkdata {  
     color: rgb(3, 202, 3);
     }
-  .form-input-group.form_error i.checkdata {  
+  .form-input-group.form_error i.checkdata,.form-input-group.form_error span {  
     color: #D83D5A;
   }
    
@@ -265,17 +237,6 @@ display: block
   position: relative;
 }
 
-i.fa-facebook {
-  font-family: FontAwesome;
-  font-size: 8 rem;
-  font-style: normal;
-  margin-left: 5px;
-  margin-top: 10px;
-  float: left;
-  z-index: 2;
- color:rgb(250, 12, 12);
-  position: absolute;
-}
 .social {
   display: block;
   margin: 0 auto;
@@ -371,8 +332,8 @@ box-shadow: none;
   }
 
   .image {
-  width:150 ;
-  height:150;
+  width: 90px;
+  height:90px;
   }
   .form-input-group input {
      font-size: 0.80em;     
