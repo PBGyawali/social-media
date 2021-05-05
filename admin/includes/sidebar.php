@@ -89,6 +89,7 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 					<div class="dropdown-menu dropdown-menu-right "	role="menu">
 						<h6 class="dropdown-header alert-primary text-center">Your Messages</h6>
 			<?php if (isset($messages) &&!empty($messages)): ?>
+				<?php if (is_array($messages)): ?>
 					<?php foreach ($messages as $key => $message): ?>
 			<div class="dropdown">
 				<div class="dropdown-list  ">
@@ -105,7 +106,10 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 				</div>
 			</div>
 				<?php endforeach ?>
+				<?php else: ?>
+					<?php echo $messages; ?>
 				<a class="text-center dropdown-item small text-gray-500" href="allmessages.php">Show All Messages</a>
+				<?php endif ?>
 				<?php else: ?>
 					<div class="row ">
 				<div class="col-lg-12 col-xl-12 col-sm-6">
@@ -121,7 +125,10 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 				</div>
 				</div>
 				</div>
-				<?php endif ?></div>
+				<?php endif ?>
+				
+				
+				</div>
                                 </div>
 								<!--message div ends here-->			
 								<div class="shadow dropdown-list dropdown-menu  dropdown-menu-right " aria-labelledby="alertsDropdown"></div>
@@ -142,8 +149,8 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 	</div></div>
 	<div class="container-fluid mt-1 pt-8" style="z-index:100">
 	    <div class="row vh-100 ">
-	        <div class="col-2 collapse show sidebar vh-100 bg-dark position-fixed px-0"style="z-index:100">
-	            <ul class="nav flex-column flex flex-fill sidebar vh-100 navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="sidebar" >	            	
+	        <div class="col-2 collapse show sidebar vh-100 bg-dark  px-0"style="z-index:100">
+	            <ul class="nav flex-column flex flex-fill sidebar vh-100 navbar-nav bg-gradient-primary   " id="sidebar" >	            	
 					<li class="nav-item text-center">
                     <span id="user_uploaded_image_medium">
 					<img src="<?php echo USER_IMAGES_URL.rawurlencode($records->image_check($profileimage,USER_IMAGES_DIR )); ?>" class="rounded-circle mb-0 img-fluid" width="100" height="100"/></li></span>
@@ -171,8 +178,8 @@ if($page_name == 'posts'|| $page_name =='topics')$manage_article='active_class' 
 					</li>	
 	            </ul>
 			</div>
-			<div class="col  offset-sm-2 py-3 pt-auto ml-aauto ">
+			<div class="col  offset-sm-2 py-3 pt-auto ml-auto ">
     <script src="<?php echo JS_URL.'confirmdefaults.js'?>"></script>
-    <script src="<?php echo JS_URL.'confirm.js'?>"></script>
+    <script src="<?php echo JS_URL.'confirm.js'?>"></script>	
     <script src="<?php echo JS_URL.'dropdown_button.js'?>"></script>
             

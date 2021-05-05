@@ -77,7 +77,7 @@ function WebsiteArray(){
   {    
 	  $login_menu	=	$katha->clean_input($_POST["login_menu"]);
 	  $id			=	$katha->clean_input($_POST["user_id"]);  
-	$katha->UpdateDataColumn('users ','login',$login_menu,'id',$id);
+	$katha->UpdateDataColumn('userlogs ','login',$login_menu,'user_id',$id);
     if($katha->row()>0)
 		$response= '<div class="alert alert-success">Details Updated Successfully</div>';	
 	else{

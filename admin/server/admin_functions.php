@@ -3,8 +3,7 @@
 $katha=new publicview();
 $topic_id = 0;
 $topic_name =$data='';
-$status='success';
-
+$status="danger";
 
 if(isset($_POST["action"]))	 	$action = $katha->clean_input($_POST["action"]);	
 if(isset($_POST["topic_id"]))	$topic_id=$katha->clean_input($_POST['topic_id']);
@@ -17,8 +16,7 @@ if(!empty($action))
 		case "add":
 		case "edit":
 			if (empty($topic)){ 
-				$message= "Topic name required"; 
-				$status="danger";
+				$message= "Topic name required";
 			}
 			else 
 			{	
@@ -28,8 +26,7 @@ if(!empty($action))
 						// Ensure that no topic is saved twice. 
 					$topic_check_query =$katha->CountTable('topics','slug',$slug);			
 					if ($topic_check_query>0){ 
-						$message= "Topic already exists";
-						$status="danger";
+						$message= "Topic already exists";						
 					} 
 					else
 					{					
@@ -39,6 +36,7 @@ if(!empty($action))
 							$insert_id = $katha->id();
 							if ($insert_id ){
 								$message="The topic was successfully added";
+								$status='success';
 								$data= '
 								<tr  class="topic-box" id="topic_'. $insert_id.'">
 										<td class="index">1</td>
@@ -50,8 +48,7 @@ if(!empty($action))
 										</tr>';
 							}
 							else{								
-									$message= "Topic is not unique";
-									$status="danger";
+									$message= "Topic is not unique";									
 							}							
 						}
 					}
@@ -60,8 +57,7 @@ if(!empty($action))
 						case "edit":							
 								$topic_check_query=$katha->CountTable('topics',array('slug','id!'),array($slug,$topic_id));						
 								if ($topic_check_query>0) { 
-									$message= "Topic already exists";
-									$status="danger";
+									$message= "Topic already exists";									
 								} 
 								else{
 									$result =$katha->UpdateDataColumn('topics',array('name','slug'),array($topic,$slug),"id",$topic_id);
@@ -69,14 +65,14 @@ if(!empty($action))
 									if($result){ 
 										if ($katha->row()){
 											$message="The topic was successfully updated";
+											$status='success';
 										}
 										else{
 											$status="warning";
 											$message="There was no change made";
 										}										
 									}
-									else{
-										$status="danger";
+									else{										
 										$message="There update could not be executed";
 									}
 								}																						
@@ -88,9 +84,9 @@ if(!empty($action))
 			$result=$katha->Delete('topics','id',$topic_id);
 			if($result){
 				$message="The topic was successfully deleted";
+				$status='success';
 			}
-			else{
-				$status="danger";
+			else{			
 				$message="The topic could not be deleted due to some error";
 			}			
 			break;

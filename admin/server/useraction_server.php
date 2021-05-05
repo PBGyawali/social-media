@@ -19,7 +19,7 @@ $user_id=(isset($_SESSION['id']))?$_SESSION['id']:'';
 
 if (isset($_POST['reset'])) {
 	$ID= $katha->clean_input($_POST['sel_record']);
-	$row=$katha->getArray('users','id',$ID,'',1);
+	$row=$katha->getArray('users','id',$ID);
     $email=$row['email'];
     $username=$row['username'];
     $first_name=$row['first_name'];
@@ -215,7 +215,7 @@ if (isset($_POST['reg_admin']))
 	if (count($errors) == 0)
 	{
 			// first check for duplicate username and/or email
-			$user=$katha->get_data(array('username','email'),'users',array('username','email'),array($username,$email),'OR',1);			
+			$user=$katha->get_data(array('username','email'),'users',array('username','email'),array($username,$email),'OR');			
 					if ($user) 
 					{ // if user exists
 							if ($user['username'] === $username) {
