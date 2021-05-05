@@ -21,15 +21,7 @@ $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 	{		var column = dataTable.column( $(this).attr('data-column') );		
 			column.visible( ! column.visible() );
 	} );
-	function timeout()
-	{		setTimeout(function(){
-            $('.error, .message, .alert').slideUp();
-		}, 3000);
-		
-		setTimeout(function(){
-		$('#message,#alert_action,#form_message').html('');
-		}, 5000);
-	}
+	
 	function showMessage(data)
 	{		$('#alert_action,#message').fadeIn().html(data);
 		timeout();
