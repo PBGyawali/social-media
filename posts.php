@@ -5,9 +5,7 @@ include_once(USER_INCLUDES. 'minimal_header.php');
 include_once(USER_INCLUDES.'sidebar.php');
 if(!$article->is_login())	header("location:".$article->base_url."");?>
 	        <div class="col-sm-12 py-4">
-			<div class="alert alert-success success_msg" role="alert" id="success_msg" ></div>			
-			<div class="alert alert-danger error_msg" role="alert" id="error_msg" ></div>
-	        	<span id="message"></span>
+			<span class="text-center position-absolute w-100"id="message" style="z-index:50"></span>
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">

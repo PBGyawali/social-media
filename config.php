@@ -23,7 +23,8 @@
     define("UPLOAD_URL", BASE_URL."uploads/");
     define("ADMIN_URL", BASE_URL."admin/");
     define("ADMIN_SERVER_URL", ADMIN_URL."server/");
-    define("USER_SERVER_URL", BASE_URL."server/");    
+    define("USER_SERVER_URL", BASE_URL."server/"); 
+    define("SERVER_URL", BASE_URL."server/");     
     define("ASSETS_URL", BASE_URL."static/");
     define("CSS_URL", ASSETS_URL."css/");
     define("JS_URL", ASSETS_URL."jscripts/");

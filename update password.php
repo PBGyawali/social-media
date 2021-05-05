@@ -19,11 +19,11 @@ include_once(USER_INCLUDES.'sidebar.php');
 <style>body {background-image: url('<?=BACKGROUNDS_URL?>contactusbg.jpg');}</style>	
 </head>
 <body >	
-<img src="<?php echo LOGO_URL.$katha->WebsiteLogo(); ?>"class="d-block mx-auto img-responsive " width="150" height= "150">
+<img src="<?php echo LOGO_URL.$katha->WebsiteLogo(); ?>"class="d-block mx-auto img-responsive " width="120" height= "120">
 	        <div class="col-xs-12 col-sm-9 col-md-8 col-lg-6 pt-3 m-auto">
-			<div class="row row-fluid">					
-			<div id="error_msg" class="alert alert-danger error_msg m-auto text-center col-md-12" role="alert" ></div>	
-			<div id="success_msg" class="alert alert-success success_msg m-auto text-center" role="alert" ></div>	</div>	
+			<div class="row row-fluid">	
+			<span class="text-center position-absolute w-100 message"id="message" style="z-index:978"></span>				
+				</div>	
 	            <div class="card">
 	            	<div class="card-header">
 	            		<div class="row">
@@ -36,7 +36,7 @@ include_once(USER_INCLUDES.'sidebar.php');
 	            	<div class="card-body pr-0">
 	            		
 	            		<div class="col-md-12">
-	            			<form method="post" id="user_form" action="server/main_server.php">
+	            			<form method="post" id="user_form" class="password"action="<?=SERVER_URL?>main_server.php">
 	            				<div class="form-group">
 					          		<div class="row">
 						            	<label class="col-xs-12 col-sm-3 text-left pl-0 pr-1 ">Current Password <span class="text-danger">*</span></label>
@@ -84,58 +84,4 @@ include_once(USER_INCLUDES.'sidebar.php');
 </body>
 </html>
 <?php include_once(USER_INCLUDES.'minimal_footer.php');?>
-<script>
-
-$(document).ready(function(){
-	
-	var url = $('#user_form').attr('action');	
-	$('#user_form').parsley();
-
-	$('#user_form').on('submit', function(event){
-		event.preventDefault();
-		if($('#user_form').parsley().isValid())
-		{
-		var data = new FormData(this);
-		// If you want to add an extra field for the FormData
-        data.append("update_password", 1);
-				$.ajax({
-				url:url,
-				method:"POST",
-				data:data,
-				processData: false,
-            	contentType: false,
-            	cache: false,
-            	timeout: 800000,			
-				dataType:"JSON",			
-				beforeSend:function()
-				{
-					$('#submit_button').attr('disabled', 'disabled');
-					$('#submit_button').html('wait...');
-				},
-				complete:function(){
-					$('#submit_button').attr('disabled', false);
-					$('#submit_button').html('<i class="fas fa-lock"></i> Change');
-					//$('#user_form')[0].reset();	
-				},
-				success:function(data)
-				{					
-					if(data.error != '')
-					{ 
-						$('#error_msg').html(data.error);
-						$(".error_msg").fadeTo(5000, 500).slideUp(500);
-					}
-					else{ 
-						$('#success_msg').html(data.success);
-						$(".success_msg").fadeTo(2500, 800).slideUp(800); 						
-						$('.timeago').timeago('update', new Date());
-					}
-					
-						
-				}
-			})
-		}
-	});
-
-});
-
-</script>
+<script src="<?php echo JS_URL.'confirm_button.js'?>"></script>	
