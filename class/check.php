@@ -86,10 +86,10 @@ class check{
         }
         function validate_password($password)
         {       global $errors;
-             if (strlen($password) < 6)array_push($errors,'Password must be minimum 6 characters long <br>');            
-             if (!preg_match('@[A-Z]@', $password))array_push($errors,'Password does not have upper case letter. <br>');            
-             if(!preg_match('@[0-9]@', $password))array_push($errors,'Password does not have number <br>');
-             if(!preg_match('@[^\w]@', $password))array_push($errors,'Password does not have special character. <br>');
+             if (strlen($password) < 6)array_push($errors,'Password must be minimum 6 characters long ');            
+             if (!preg_match('@[A-Z]@', $password))array_push($errors,'Password does not have upper case letter. ');            
+             if(!preg_match('@[0-9]@', $password))array_push($errors,'Password does not have number ');
+             if(!preg_match('@[^\w]@', $password))array_push($errors,'Password does not have special character. ');
             
         }
 

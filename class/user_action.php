@@ -28,7 +28,7 @@ class user extends publicview{
   
   function getProfilePictureById($id){ return $this->Get_profile_image($id);}
   
-  function getColumnById($id,$column){ return $this->get_data($column,'users','id',$id,'',1);}
+  function getColumnById($id,$column){ return $this->get_data($column,'users','id',$id);}
   
   function getRepliesByCommentId($id){return $this->getAllArray('replies','comment_id',$id);}
   
@@ -211,7 +211,7 @@ function reply($reply) {
 
 if (isset($_GET['post-slug']) && !empty($_GET['post-slug'])) {
 	$slug = $_GET['post-slug'];	
-	$posting = $this->get_data('id','posts','slug',$slug,'',1);
+	$posting = $this->get_data('id','posts','slug',$slug);
 	if(!empty($posting))
   $comments = $this->getallcomments($posting['id']);
 }

@@ -83,7 +83,7 @@ class file extends method{
 				//generates a random number
 				$random=rand(100,10000);
 				//set a new random name to the image
-				$new_random_name=$string.'_'.$id.'_'.time().'_'.date("m_d_y").'_'.$random.'.'.$extension;
+				$new_random_name=$string.'_'.$id.'_'.date("m_d_y").'_'.time().'_'.$random.+uniqid().'.'.$extension;
 				return $new_random_name;
 	}
 

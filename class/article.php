@@ -14,8 +14,8 @@ public function __construct(){
 }
 
 function editPost($post_id){	
-	$post = $this->getArray('posts','id',$post_id,'',1);		
-	$topic_id = $this->get_data('topic_id','post_topic','post_id',$post_id,'',1);
+	$post = $this->getArray('posts','id',$post_id);		
+	$topic_id = $this->get_data('topic_id','post_topic','post_id',$post_id,);
 	$post['newbody'] = html_entity_decode($post['body']);
 	array_push($post,$post['newbody'])	;
 	$finalresponse = array('response' => $post,'status' => $topic_id);
@@ -67,9 +67,10 @@ $posts=$this->getAllArray('posts ps','',$topic_id,'','',array($orderby,'created_
 }
 
 function getPostTopic($post_id=2){// Receives a post id and * Returns topic of the post
-	$attr=array('fields'=>'topic_id','debug'=>true);	
-	$join=array('WHERE id=('=>$this->get_data('topic_id','post_topic','','','','','',$attr));	
-	return $this->getArray('topics',array('post_id'),array($post_id),array(')'),1,$join);	
+	$attr=array('fields'=>'topic_id','debug'=>true,'nolimit'=>true);	
+	$join=array('WHERE id=('=>$this->get_data('topic_id','post_topic','','','','',$attr));	
+	$attr=array();	
+	return $this->getArray('topics',array('post_id'),array($post_id),array(')'),$join,$attr);	
 }
 
 function getPost($post_slug){// Returns a single post

@@ -20,7 +20,8 @@ class records extends publicview{
 	}
 
 	function get_user_all_data(){
-		return  $this->getAllArray('users');		
+		$join=array('LEFT JOIN'=>array('userlogs'=>"users.id = userlogs.user_id"));
+		return  $this->getAllArray('users','','','','','users.id','DESC',$join,'');		
 	}
 
 	function save_chat($user_id=1){
@@ -35,6 +36,8 @@ function allOfflineMessages(){
 		return $this->get_messages();
 }
 function allunseenOfflineMessages(){
+	$data['debug']=true;
+	//return $this->get_messages('3','','DESC',$data);
 		return $this->get_messages(3);
 }
 
