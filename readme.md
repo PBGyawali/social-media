@@ -1,7 +1,11 @@
-Please go to the folder named "documentation" to read all the necessary documents and take a look at the 
+
+
+<p align="center"><img src="https://raw.githubusercontent.com/PBGyawali/social-media/main/static/images/logo/logo%20with%20words_4_02_01_21_4241.png" width="400"></p>
+
+**Please go to the folder named "documentation" to read all the necessary documents and take a look at the 
 documents required for you to edit in the website or run this website in your local server.
 
-This projected in intended towards creating a social media. it is based on php as a backend server as uses object oriented method of programming to perform the operation. for the purpose of database it uses mysql as a server and uses mysqli driver and prepared statements to achieve the task without compromising security.
+This projected in intended towards creating a social media. it is based on php as a backend server as uses object oriented method of programming to perform the operation. for the purpose of database it uses mysql as a server and uses mysqli driver and prepared statements to achieve the task without compromising security.**
 
 
 
